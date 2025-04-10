@@ -47,8 +47,10 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'token' => $token
+            'token' => $token,
+            'redirect' => '/home'
         ]);
+
     }
 
     // Obtener datos del usuario autenticado
