@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\generoController;
 use App\Http\Controllers\Api\NacionalidadController;
 use App\Http\Controllers\Api\epsController;
 
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
