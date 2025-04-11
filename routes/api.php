@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\rolController;
 use App\Http\Controllers\Api\generoController;
+use App\Http\Controllers\Api\NacionalidadController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -21,3 +22,10 @@ Route::put('/genero/{idGenero}', [generoController::class, 'update']);
 Route::get('/genero/{id}', [generoController::class, 'show']);
 Route::patch('/genero/{id}', [generoController::class, 'updatePartial']);
 Route::delete('/genero/{id}', [generoController::class, 'destroy']);
+
+Route::get('/nacionalidad', [NacionalidadController::class, 'index']);
+Route::post('/nacionalidad', [NacionalidadController::class, 'store']);
+Route::put('/nacionalidad/{idGenero}', [NacionalidadController::class, 'update']);
+Route::get('/nacionalidad/{id}', [NacionalidadController::class, 'show']);
+Route::patch('/nacionalidad/{id}', [NacionalidadController::class, 'updatePartial']);
+Route::delete('/nacionalidad/{id}', [NacionalidadController::class, 'destroy']);

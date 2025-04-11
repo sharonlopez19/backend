@@ -3,63 +3,68 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Nacionalidad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class NacionalidadController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function index(){
+        $nacionalidad=Nacionalidad::all();
+       
+        $data=[
+            "Nacionalidad" => $nacionalidad,
+            "status" => 200
+        ];
+        return response()->json($data,200);
+        //return "Obteniendo lista de Nacionalidads del contNacionalidadador";
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $data=[
+            "mesaje " => "este modulo no permite crear, solo el administrador de base de datos lo puede hacer",
+            "status" => 400
+        ];
+        return response()->json([$data],400);
+        
     }
+    public function show($id){
+        $Nacionalidad=Nacionalidad::find($id);
+        if(!$Nacionalidad){
+            $data=[
+                "mensage" => " No se encontro Nacionalidad",
+                "status" => 201
+            ];
+            return response()->json([$data],201);
+        }
+        $data=[
+            "Nacionalidad" => $Nacionalidad,
+            "status" => 200
+        ];
+        return response()->json([$data],200);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function destroy($id){
+        $data=[
+            "mesaje " => "este modulo no permite eliminar, solo el administrador de base de datos lo puede hacer",
+            "status" => 400
+        ];
+        return response()->json([$data],400);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request,$id){
+        $data=[
+            "mesaje " => "este modulo no permite Actualizar, solo el administrador de base de datos lo puede hacer",
+            "status" => 400
+        ];
+        return response()->json([$data],400);
+        
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function updatePartial(Request $request,$id){
+        $data=[
+            "mesaje " => "este modulo no permite actualizar, solo el administrador de base de datos lo puede hacer",
+            "status" => 400
+        ];
+        return response()->json([$data],400);
     }
 }
