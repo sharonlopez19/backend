@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\rolController;
 use App\Http\Controllers\Api\generoController;
 use App\Http\Controllers\Api\NacionalidadController;
+use App\Http\Controllers\Api\epsController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -29,3 +30,10 @@ Route::put('/nacionalidad/{idGenero}', [NacionalidadController::class, 'update']
 Route::get('/nacionalidad/{id}', [NacionalidadController::class, 'show']);
 Route::patch('/nacionalidad/{id}', [NacionalidadController::class, 'updatePartial']);
 Route::delete('/nacionalidad/{id}', [NacionalidadController::class, 'destroy']);
+
+Route::get('/epss', [epsController::class, 'index']);
+Route::post('/epss', [epsController::class, 'store']);
+Route::put('/epss/{id}', [epsController::class, 'update']);
+Route::get('/epss/{id}', [epsController::class, 'show']);
+Route::patch('/epss/{id}', [epsController::class, 'updatePartial']);
+Route::delete('/epss/{id}', [epsController::class, 'destroy']);
