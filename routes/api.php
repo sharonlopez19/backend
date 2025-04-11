@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\rolController;
+use App\Http\Controllers\Api\generoController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -13,3 +14,10 @@ Route::put('/rols/{id}', [rolController::class, 'update']);
 Route::get('/rols/{id}', [rolController::class, 'show']);
 Route::patch('/rols/{id}', [rolController::class, 'updatePartial']);
 Route::delete('/rols/{id}', [rolController::class, 'destroy']);
+
+Route::get('/genero', [generoController::class, 'index']);
+Route::post('/genero', [generoController::class, 'store']);
+Route::put('/genero/{idGenero}', [generoController::class, 'update']);
+Route::get('/genero/{id}', [generoController::class, 'show']);
+Route::patch('/genero/{id}', [generoController::class, 'updatePartial']);
+Route::delete('/genero/{id}', [generoController::class, 'destroy']);
