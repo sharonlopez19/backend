@@ -5,7 +5,8 @@ use App\Http\Controllers\Api\rolController;
 use App\Http\Controllers\Api\generoController;
 use App\Http\Controllers\Api\NacionalidadController;
 use App\Http\Controllers\Api\epsController;
-
+use App\Http\Controllers\Api\estadocivilController;
+use App\Http\Controllers\Api\hojasvidaController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -38,3 +39,17 @@ Route::put('/epss/{id}', [epsController::class, 'update']);
 Route::get('/epss/{id}', [epsController::class, 'show']);
 Route::patch('/epss/{id}', [epsController::class, 'updatePartial']);
 Route::delete('/epss/{id}', [epsController::class, 'destroy']);
+
+Route::get('/estadocivil', [estadocivilController::class, 'index']);
+Route::post('/estadocivil', [estadocivilController::class, 'store']);
+Route::put('/estadocivil/{id}', [estadocivilController::class, 'update']);
+Route::get('/estadocivil/{id}', [estadocivilController::class, 'show']);
+Route::patch('/estadocivil/{id}', [estadocivilController::class, 'updatePartial']);
+Route::delete('/estadocivil/{id}', [estadocivilController::class, 'destroy']);
+
+Route::get('/hojasvida', [hojasvidaController::class, 'index']);
+Route::post('/hojasvida', [hojasvidaController::class, 'store']);
+Route::put('/hojasvida/{id}', [hojasvidaController::class, 'update']);
+Route::get('/hojasvida/{id}', [hojasvidaController::class, 'show']);
+Route::patch('/hojasvida/{id}', [hojasvidaController::class, 'updatePartial']);
+Route::delete('/hojasvida/{id}', [hojasvidaController::class, 'destroy']);
