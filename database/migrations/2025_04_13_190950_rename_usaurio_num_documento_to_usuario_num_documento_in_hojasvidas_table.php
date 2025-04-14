@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hojasvida', function (Blueprint $table) {
-            $table->increments('idHojaDeVida');  
-            $table->string('claseLibretaMilitar', 45);
-            $table->string('numeroLibretaMilitar', 45);
-            $table->integer('usuarioNumDocumento')->index('fk_hojasvida_usuarios');
+        Schema::table('hojasvidas', function (Blueprint $table) {
+            //
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hojasvidas');
+        Schema::table('hojasvidas', function (Blueprint $table) {
+            //
+        });
     }
 };

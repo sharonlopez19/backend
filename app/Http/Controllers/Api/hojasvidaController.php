@@ -23,7 +23,7 @@ class hojasvidaController extends Controller
         $validator = Validator::make($request->all(), [
             "claseLibretaMilitar" => "required|max:45",
             "numeroLibretaMilitar" => "required|max:45",
-            "usuarioNumDocumento" => "required|number"
+            "usuarioNumDocumento" => "required"
         ]);
 
         if ($validator->fails()) {
@@ -36,10 +36,14 @@ class hojasvidaController extends Controller
         }
 
         try {
+           // dd($request->all());
+          
+        
             $Hojasvida = Hojasvida::create([
                 "claseLibretaMilitar" => $request->claseLibretaMilitar,
                 "numeroLibretaMilitar" => $request->numeroLibretaMilitar,
-                "usuarioNumDocumento " => $request->usuarioNumDocumento
+                "usuarioNumDocumento" => $request->usuarioNumDocumento
+
             ]);
 
             return response()->json([
@@ -49,7 +53,7 @@ class hojasvidaController extends Controller
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                "mensaje" => "Error al crear el género",
+                "mensaje" => "Error al crear la HV",
                 "error" => $e->getMessage(),
                 "status" => 500
             ], 500);
@@ -100,9 +104,9 @@ class hojasvidaController extends Controller
             return response()->json([$data], 404);
         }
         $validator = Validator::make($request->all(), [
-            "claseLibretaMilitar" => $request->claseLibretaMilitar,
-            "numeroLibretaMilitar" => $request->numeroLibretaMilitar,
-            "usuarioNumDocumento " => $request->usuarioNumDocumento
+            "claseLibretaMilitar" => "required|max:45",
+            "numeroLibretaMilitar" => "required|max:45",
+            "usuarioNumDocumento" => "required"
         ]);
         if ($validator->fails()) {
             $data = [
@@ -142,7 +146,7 @@ class hojasvidaController extends Controller
         $validator = Validator::make($request->all(), [
             "claseLibretaMilitar" => "max:45",
             "numeroLibretaMilitar" => "max:45",
-            "usuarioNumDocumento" => "number"
+            "usuarioNumDocumento" => "integer"
         ]);
         if ($validator->fails()) {
             $data = [

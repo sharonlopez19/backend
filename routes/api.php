@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\NacionalidadController;
 use App\Http\Controllers\Api\epsController;
 use App\Http\Controllers\Api\estadocivilController;
 use App\Http\Controllers\Api\hojasvidaController;
+use App\Http\Controllers\Api\usuarioController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -53,3 +54,10 @@ Route::put('/hojasvida/{id}', [hojasvidaController::class, 'update']);
 Route::get('/hojasvida/{id}', [hojasvidaController::class, 'show']);
 Route::patch('/hojasvida/{id}', [hojasvidaController::class, 'updatePartial']);
 Route::delete('/hojasvida/{id}', [hojasvidaController::class, 'destroy']);
+
+Route::get('/usuarios', [usuarioController::class, 'index']);
+Route::post('/usuarios', [usuarioController::class, 'store']);
+Route::put('/usuarios/{id}', [usuarioController::class, 'update']);
+Route::get('/usuarios/{id}', [usuarioController::class, 'show']);
+Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
+Route::delete('/usuarios/{id}', [usuarioController::class, 'destroy']);
