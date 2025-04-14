@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\epsController;
 use App\Http\Controllers\Api\estadoCivilController;
 use App\Http\Controllers\Api\hojasvidaController;
+use App\Http\Controllers\Api\incapacidadController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -76,3 +77,9 @@ Route::get('/usuarios/{id}', [usuarioController::class, 'show']);
 Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
 Route::delete('/usuarios/{id}', [usuarioController::class, 'destroy']);
 
+Route::get('/incapacidad', [incapacidadController::class, 'index']);
+Route::post('/incapacidad', [incapacidadController::class, 'store']);
+Route::put('/incapacidad/{id}', [incapacidadController::class, 'update']);
+Route::get('/incapacidad/{id}', [incapacidadController::class, 'show']);
+Route::patch('/incapacidad/{id}', [incapacidadController::class, 'updatePartial']);
+Route::delete('/incapacidad/{id}', [incapacidadController::class, 'destroy']);
