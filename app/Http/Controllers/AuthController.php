@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Registrar un nuevo usuario y devolver token JWT
+    /**
+     * Registrar un nuevo usuario y devolver token JWT.
+     */
     public function register(Request $request)
     {
-        // Validación de campos incluyendo confirmaciones
+        // Validar campos, incluyendo confirmación de email y contraseña
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|confirmed|unique:users,email',
@@ -23,7 +24,6 @@ class AuthController extends Controller
             'password_confirmation' => 'required|string|min:6',
         ]);
 
-        // En caso de error en validación
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Error en el registro.',
@@ -31,38 +31,37 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Aquí puedes acceder directamente a los campos de confirmación
-        $email = $request->email;
-        $email_confirmation = $request->email_confirmation;
-        $password = $request->password;
-        $password_confirmation = $request->password_confirmation;
-
-        // Solo por seguridad, puedes comprobar que coincidan (opcional si ya validaste)
-        if ($email !== $email_confirmation || $password !== $password_confirmation) {
+        // Validar coincidencia de confirmaciones manualmente (opcional)
+        if (
+            $request->email !== $request->email_confirmation ||
+            $request->password !== $request->password_confirmation
+        ) {
             return response()->json([
                 'message' => 'Los campos de confirmación no coinciden.'
             ], 422);
         }
 
-        // Crear el usuario
+        // Crear usuario (la contraseña se hashea automáticamente en el modelo)
         $user = User::create([
             'name' => $request->name,
-            'email' => $email,
-            'password' => Hash::make($password),
+            'email' => $request->email,
+            'password' => $request->password, // No usar Hash::make aquí
         ]);
 
-        // Generar el token JWT
+        // Generar token JWT
         $token = JWTAuth::fromUser($user);
 
         return response()->json([
             'message' => 'Usuario registrado correctamente 🎉',
             'token' => $token,
             'user' => $user,
-            'redirect' => '/home'
+            'redirect' => '/directorio' // Para redirigir desde Angular
         ], 201);
     }
 
-    // Iniciar sesión y devolver token
+    /**
+     * Iniciar sesión y devolver token JWT.
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -73,11 +72,13 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'redirect' => '/home'
+            'redirect' => '/directorio' // Redirigir desde Angular
         ]);
     }
 
-    // Obtener datos del usuario autenticado
+    /**
+     * Retornar los datos del usuario autenticado.
+     */
     public function me()
     {
         return response()->json(Auth::user());
