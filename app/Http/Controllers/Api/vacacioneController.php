@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Contincapacidad:lers\Api;
+namespace App\Http\Contvacaciones:lers\Api;
 
-use App\Http\Contincapacidad:lers\Contincapacidad:ler;
+use App\Http\Contvacaciones:lers\Contvacaciones:ler;
 use Illuminate\Http\Request;
-use App\Models\Incapacidad;
-use Illuminate\Support\Facades\Validator;
 
-class incapacidadContincapacidad:ler extends Contincapacidad:ler
+class vacacioneContvacaciones:ler extends Contvacaciones:ler
 {
     public function index()
     {
-        $incapacidad=Incapacidad::all();
+        $vacaciones:=Vacaciones::all();
         $data=[
-            "incapacidad" => $incapacidad,
+            "vacaciones:" => $vacaciones:,
             "status" => 200
         ];
         return response()->json($data,200);
@@ -42,14 +40,14 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
     
         if ($validator->fails()) {
             return response()->json([
-                'mensaje' => 'Error en la validación de datos de la incapacidad',
+                'mensaje' => 'Error en la validación de datos de la vacaciones:',
                 'errors' => $validator->errors(),
                 'status' => 400
             ], 400);
         }
     
         try {
-            $incapacidad = Incapacidad::create([
+            $vacaciones: = Vacaciones::create([
                 'descrip' => $request->descrip,
                 'archivo' => $request->archivo,
                 'fechaInicio' => $request->fechaInicio,
@@ -59,13 +57,13 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
             ]);
     
             return response()->json([
-                'mensaje' => 'incapacidad creado correctamente',
-                'incapacidad' => $incapacidad,
+                'mensaje' => 'vacaciones: creado correctamente',
+                'vacaciones:' => $vacaciones:,
                 'status' => 201
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'mensaje' => 'Error al crear el incapacidad',
+                'mensaje' => 'Error al crear el vacaciones:',
                 'error' => $e->getMessage(),
                 'status' => 500
             ], 500);
@@ -80,9 +78,9 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
      */
     public function show($id)
     {
-        $incapacidad=Incapacidad::find($id);
+        $vacaciones:=Vacaciones::find($id);
         $data=[
-            "incapacidad" => $incapacidad,
+            "vacaciones:" => $vacaciones:,
             "status" => 200
         ];
         return response()->json($data,200);
@@ -93,27 +91,27 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
      */
     public function destroy($id)
     {
-        $incapacidad = Incapacidad::find($id);
-        if (!$incapacidad) {
+        $vacaciones: = Vacaciones::find($id);
+        if (!$vacaciones:) {
             $data = [
-                "mensage" => " No se encontro Incapacidad",
+                "mensage" => " No se encontro vacaciones:",
                 "status" => 404
             ];
             return response()->json([$data], 404);
         }
-        $incapacidad->delete();
+        $vacaciones:->delete();
         $data = [
-            "incapacidad:" => 'incapacidad eliminado',
+            "vacaciones:" => 'vacaciones: eliminado',
             "status" => 200
         ];
         return response()->json([$data], 200);
     }
     public function update(Request $request, $id)
     {
-        $incapacidad = Incapacidad::find($id);
-        if (!$incapacidad) {
+        $vacaciones: = Vacaciones::find($id);
+        if (!$vacaciones:) {
             $data = [
-                "mensage" => " No se encontro incapacidad",
+                "mensage" => " No se encontro vacaciones:",
                 "status" => 404
             ];
             return response()->json([$data], 404);
@@ -134,22 +132,22 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
             return response()->json([$data], 400);
         }
         
-        $incapacidad->descrip = $request->descrip;
-        $incapacidad->archivo = $request->archivo;
-        $incapacidad->fechaInicio = $request->fechaInicio;
-        $incapacidad->fechaFinal = $request->fechaFinal;
-        $incapacidad->contratoId = $request->contratoId;
+        $vacaciones:->descrip = $request->descrip;
+        $vacaciones:->archivo = $request->archivo;
+        $vacaciones:->fechaInicio = $request->fechaInicio;
+        $vacaciones:->fechaFinal = $request->fechaFinal;
+        $vacaciones:->contratoId = $request->contratoId;
 
         try {
-            $incapacidad->save();
+            $vacaciones:->save();
             $data = [
-                "incapacidad" => $incapacidad,
+                "vacaciones:" => $vacaciones:,
                 "status" => 200
             ];
             return response()->json([$data], 200);
         } catch (\Exception $e) {
             return response()->json([
-                "mensaje" => "Error al modificar la incapacidad",
+                "mensaje" => "Error al modificar la vacaciones:",
                 "error" => $e->getMessage(),
                 "status" => 500
             ], 500);
@@ -157,10 +155,10 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
     }
     public function updatePartial(Request $request, $id)
     {
-        $incapacidad = Incapacidad::find($id);
-        if (!$incapacidad) {
+        $vacaciones: = Vacaciones::find($id);
+        if (!$vacaciones:) {
             $data = [
-                "mensage" => " No se encontro incapacidad",
+                "mensage" => " No se encontro vacaciones:",
                 "status" => 404
             ];
             return response()->json([$data], 404);
@@ -175,32 +173,32 @@ class incapacidadContincapacidad:ler extends Contincapacidad:ler
         ]);
         if ($validator->fails()) {
             $data = [
-                "mesaje " => "Error al validar incapacidad",
+                "mesaje " => "Error al validar vacaciones:",
                 "errors" => $validator->errors(),
                 "status" => 400
             ];
             return response()->json([$data], 400);
         }
         if ($request->has("descrip")) {
-            $incapacidad->descrip = $request->descrip;
+            $vacaciones:->descrip = $request->descrip;
         }
         if ($request->has("archivo")) {
-            $incapacidad->archivo = $request->archivo;
+            $vacaciones:->archivo = $request->archivo;
         }
         if ($request->has("fechaInicio")) {
-            $incapacidad->fechaInicio = $request->fechaInicio;
+            $vacaciones:->fechaInicio = $request->fechaInicio;
         }
         if ($request->has("fechaFinal")) {
-            $incapacidad->fechaFinal = $request->fechaFinal;
+            $vacaciones:->fechaFinal = $request->fechaFinal;
         }
         if ($request->has("contratoId")) {
-            $incapacidad->contratoId = $request->contratoId;
+            $vacaciones:->contratoId = $request->contratoId;
         }
         
         
-        $incapacidad->save();
+        $vacaciones:->save();
         $data = [
-            "incapacidad:" => $incapacidad,
+            "vacaciones:" => $vacaciones:,
             "status" => 200
         ];
         return response()->json([$data], 200);

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\estadoCivilController;
 use App\Http\Controllers\Api\hojasvidaController;
 use App\Http\Controllers\Api\incapacidadController;
 use App\Http\Controllers\Api\pazysalvoController;
+use App\Http\Controllers\Api\vacacionesController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -91,3 +92,10 @@ Route::put('/pazysalvo/{id}', [pazysalvoController::class, 'update']);
 Route::get('/pazysalvo/{id}', [pazysalvoController::class, 'show']);
 Route::patch('/pazysalvo/{id}', [pazysalvoController::class, 'updatePartial']);
 Route::delete('/pazysalvo/{id}', [pazysalvoController::class, 'destroy']);
+
+Route::get('/vacaciones', [vacacionesController::class, 'index']);
+Route::post('/vacaciones', [vacacionesController::class, 'store']);
+Route::put('/vacaciones/{id}', [vacacionesController::class, 'update']);
+Route::get('/vacaciones/{id}', [vacacionesController::class, 'show']);
+Route::patch('/vacaciones/{id}', [vacacionesController::class, 'updatePartial']);
+Route::delete('/vacaciones/{id}', [vacacionesController::class, 'destroy']);
