@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\incapacidadController;
 use App\Http\Controllers\Api\pazysalvoController;
 use App\Http\Controllers\Api\vacacionesController;
 use App\Http\Controllers\Api\usuarioshasrolController;
+use App\Http\Controllers\Api\tipopermisosController;
+use App\Http\Controllers\Api\permisosController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -107,3 +109,17 @@ Route::put('/usuarioshasrol/{id}', [usuarioshasrolController::class, 'update']);
 Route::get('/usuarioshasrol/{id}', [usuarioshasrolController::class, 'show']);
 Route::patch('/usuarioshasrol/{id}', [usuarioshasrolController::class, 'updatePartial']);
 Route::delete('/usuarioshasrol/{id}', [usuarioshasrolController::class, 'destroy']);
+
+Route::get('/tipopermisos', [tipopermisosController::class, 'index']);
+Route::post('/tipopermisos', [tipopermisosController::class, 'store']);
+Route::put('/tipopermisos/{id}', [tipopermisosController::class, 'update']);
+Route::get('/tipopermisos/{id}', [tipopermisosController::class, 'show']);
+Route::patch('/tipopermisos/{id}', [tipopermisosController::class, 'updatePartial']);
+Route::delete('/tipopermisos/{id}', [tipopermisosController::class, 'destroy']);
+
+Route::get('/permisos', [permisosController::class, 'index']);
+Route::post('/permisos', [permisosController::class, 'store']);
+Route::put('/permisos/{id}', [permisosController::class, 'update']);
+Route::get('/permisos/{id}', [permisosController::class, 'show']);
+Route::patch('/permisos/{id}', [permisosController::class, 'updatePartial']);
+Route::delete('/permisos/{id}', [permisosController::class, 'destroy']);
