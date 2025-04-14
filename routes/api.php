@@ -11,10 +11,11 @@ use App\Http\Controllers\Api\estadoCivilController;
 use App\Http\Controllers\Api\hojasvidaController;
 use App\Http\Controllers\Api\incapacidadController;
 use App\Http\Controllers\Api\pazysalvoController;
-use App\Http\Controllers\Api\vacacionesController;
+use App\Http\Controllers\Api\vacacioneController;
 use App\Http\Controllers\Api\usuarioshasrolController;
 use App\Http\Controllers\Api\tipopermisosController;
 use App\Http\Controllers\Api\permisosController;
+use App\Http\Controllers\Api\postulacionesController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -96,12 +97,12 @@ Route::get('/pazysalvo/{id}', [pazysalvoController::class, 'show']);
 Route::patch('/pazysalvo/{id}', [pazysalvoController::class, 'updatePartial']);
 Route::delete('/pazysalvo/{id}', [pazysalvoController::class, 'destroy']);
 
-Route::get('/vacaciones', [vacacionesController::class, 'index']);
-Route::post('/vacaciones', [vacacionesController::class, 'store']);
-Route::put('/vacaciones/{id}', [vacacionesController::class, 'update']);
-Route::get('/vacaciones/{id}', [vacacionesController::class, 'show']);
-Route::patch('/vacaciones/{id}', [vacacionesController::class, 'updatePartial']);
-Route::delete('/vacaciones/{id}', [vacacionesController::class, 'destroy']);
+Route::get('/vacaciones', [vacacioneController::class, 'index']);
+Route::post('/vacaciones', [vacacioneController::class, 'store']);
+Route::put('/vacaciones/{id}', [vacacioneController::class, 'update']);
+Route::get('/vacaciones/{id}', [vacacioneController::class, 'show']);
+Route::patch('/vacaciones/{id}', [vacacioneController::class, 'updatePartial']);
+Route::delete('/vacaciones/{id}', [vacacioneController::class, 'destroy']);
 
 Route::get('/usuarioshasrol', [usuarioshasrolController::class, 'index']);
 Route::post('/usuarioshasrol', [usuarioshasrolController::class, 'store']);
@@ -123,3 +124,10 @@ Route::put('/permisos/{id}', [permisosController::class, 'update']);
 Route::get('/permisos/{id}', [permisosController::class, 'show']);
 Route::patch('/permisos/{id}', [permisosController::class, 'updatePartial']);
 Route::delete('/permisos/{id}', [permisosController::class, 'destroy']);
+
+Route::get('/postulaciones', [postulacionesController::class, 'index']);
+Route::post('/postulaciones', [postulacionesController::class, 'store']);
+Route::put('/postulaciones/{id}', [postulacionesController::class, 'update']);
+Route::get('/postulaciones/{id}', [postulacionesController::class, 'show']);
+Route::patch('/postulaciones/{id}', [postulacionesController::class, 'updatePartial']);
+Route::delete('/postulaciones/{id}', [postulacionesController::class, 'destroy']);
