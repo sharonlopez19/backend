@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Contvacaciones:lers\Api;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Contvacaciones:lers\Contvacaciones:ler;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Vacaciones;
+use Illuminate\Support\Facades\Validator;
 
-class vacacioneContvacaciones:ler extends Contvacaciones:ler
+class vacacioneController extends Controller
 {
     public function index()
     {
-        $vacaciones:=Vacaciones::all();
+        $vacaciones=Vacaciones::all();
         $data=[
-            "vacaciones:" => $vacaciones:,
+            "vacaciones:" => $vacaciones,
             "status" => 200
         ];
         return response()->json($data,200);
@@ -47,7 +49,7 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
         }
     
         try {
-            $vacaciones: = Vacaciones::create([
+            $vacaciones = Vacaciones::create([
                 'descrip' => $request->descrip,
                 'archivo' => $request->archivo,
                 'fechaInicio' => $request->fechaInicio,
@@ -58,7 +60,7 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
     
             return response()->json([
                 'mensaje' => 'vacaciones: creado correctamente',
-                'vacaciones:' => $vacaciones:,
+                'vacaciones:' => $vacaciones,
                 'status' => 201
             ], 201);
         } catch (\Exception $e) {
@@ -78,9 +80,9 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
      */
     public function show($id)
     {
-        $vacaciones:=Vacaciones::find($id);
+        $vacaciones=Vacaciones::find($id);
         $data=[
-            "vacaciones:" => $vacaciones:,
+            "vacaciones:" => $vacaciones,
             "status" => 200
         ];
         return response()->json($data,200);
@@ -91,15 +93,15 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
      */
     public function destroy($id)
     {
-        $vacaciones: = Vacaciones::find($id);
-        if (!$vacaciones:) {
+        $vacaciones = Vacaciones::find($id);
+        if (!$vacaciones) {
             $data = [
                 "mensage" => " No se encontro vacaciones:",
                 "status" => 404
             ];
             return response()->json([$data], 404);
         }
-        $vacaciones:->delete();
+        $vacaciones->delete();
         $data = [
             "vacaciones:" => 'vacaciones: eliminado',
             "status" => 200
@@ -108,8 +110,8 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
     }
     public function update(Request $request, $id)
     {
-        $vacaciones: = Vacaciones::find($id);
-        if (!$vacaciones:) {
+        $vacaciones = Vacaciones::find($id);
+        if (!$vacaciones) {
             $data = [
                 "mensage" => " No se encontro vacaciones:",
                 "status" => 404
@@ -132,16 +134,16 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
             return response()->json([$data], 400);
         }
         
-        $vacaciones:->descrip = $request->descrip;
-        $vacaciones:->archivo = $request->archivo;
-        $vacaciones:->fechaInicio = $request->fechaInicio;
-        $vacaciones:->fechaFinal = $request->fechaFinal;
-        $vacaciones:->contratoId = $request->contratoId;
+        $vacaciones->descrip = $request->descrip;
+        $vacaciones->archivo = $request->archivo;
+        $vacaciones->fechaInicio = $request->fechaInicio;
+        $vacaciones->fechaFinal = $request->fechaFinal;
+        $vacaciones->contratoId = $request->contratoId;
 
         try {
-            $vacaciones:->save();
+            $vacaciones->save();
             $data = [
-                "vacaciones:" => $vacaciones:,
+                "vacaciones:" => $vacaciones,
                 "status" => 200
             ];
             return response()->json([$data], 200);
@@ -155,8 +157,8 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
     }
     public function updatePartial(Request $request, $id)
     {
-        $vacaciones: = Vacaciones::find($id);
-        if (!$vacaciones:) {
+        $vacaciones = Vacaciones::find($id);
+        if (!$vacaciones) {
             $data = [
                 "mensage" => " No se encontro vacaciones:",
                 "status" => 404
@@ -180,25 +182,25 @@ class vacacioneContvacaciones:ler extends Contvacaciones:ler
             return response()->json([$data], 400);
         }
         if ($request->has("descrip")) {
-            $vacaciones:->descrip = $request->descrip;
+            $vacaciones->descrip = $request->descrip;
         }
         if ($request->has("archivo")) {
-            $vacaciones:->archivo = $request->archivo;
+            $vacaciones->archivo = $request->archivo;
         }
         if ($request->has("fechaInicio")) {
-            $vacaciones:->fechaInicio = $request->fechaInicio;
+            $vacaciones->fechaInicio = $request->fechaInicio;
         }
         if ($request->has("fechaFinal")) {
-            $vacaciones:->fechaFinal = $request->fechaFinal;
+            $vacaciones->fechaFinal = $request->fechaFinal;
         }
         if ($request->has("contratoId")) {
-            $vacaciones:->contratoId = $request->contratoId;
+            $vacaciones->contratoId = $request->contratoId;
         }
         
         
-        $vacaciones:->save();
+        $vacaciones->save();
         $data = [
-            "vacaciones:" => $vacaciones:,
+            "vacaciones:" => $vacaciones,
             "status" => 200
         ];
         return response()->json([$data], 200);

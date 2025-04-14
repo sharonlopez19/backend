@@ -1,13 +1,12 @@
 <?php
+namespace App\Http\Controllers\Api;
 
-namespace App\Http\Contincapacidad:lers\Api;
-
-use App\Http\Contincapacidad:lers\Contincapacidad:ler;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Incapacidad;
 use Illuminate\Support\Facades\Validator;
 
-class incapacidadContincapacidad:ler extends Contincapacidad:ler
+class incapacidadController extends Controller
 {
     public function index()
     {
