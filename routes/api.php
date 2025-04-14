@@ -1,31 +1,53 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Api\rolController;
-use App\Http\Controllers\Api\generoController;
+use App\Http\Controllers\Api\RolController;
+use App\Http\Controllers\Api\GeneroController;
 use App\Http\Controllers\Api\NacionalidadController;
-use App\Http\Controllers\Api\epsController;
-use App\Http\Controllers\Api\estadocivilController;
-use App\Http\Controllers\Api\hojasvidaController;
+use App\Http\Controllers\Api\EpsController;
+use App\Http\Controllers\Api\EstadoCivilController;
+use App\Http\Controllers\Api\HojasVidaController;
 
+/*
+|--------------------------------------------------------------------------
+| Rutas Públicas
+|--------------------------------------------------------------------------
+*/
+
+// Registro y login
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// Obtener datos del usuario autenticado
 Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 
-Route::get('/rols', [rolController::class, 'index']);
-Route::post('/rols', [rolController::class, 'store']);
-Route::put('/rols/{id}', [rolController::class, 'update']);
-Route::get('/rols/{id}', [rolController::class, 'show']);
-Route::patch('/rols/{id}', [rolController::class, 'updatePartial']);
-Route::delete('/rols/{id}', [rolController::class, 'destroy']);
+/*
+|--------------------------------------------------------------------------
+| Rutas Protegidas con Middleware 'auth:api' (si aplica)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:api')->group(function () {
+    // aquí van todas las rutas protegidas
+});
 
-Route::get('/genero', [generoController::class, 'index']);
-Route::post('/genero', [generoController::class, 'store']);
-Route::put('/genero/{idGenero}', [generoController::class, 'update']);
-Route::get('/genero/{id}', [generoController::class, 'show']);
-Route::patch('/genero/{id}', [generoController::class, 'updatePartial']);
-Route::delete('/genero/{id}', [generoController::class, 'destroy']);
+// Rutas de ROL
+Route::get('/rols', [RolController::class, 'index']);
+Route::post('/rols', [RolController::class, 'store']);
+Route::put('/rols/{id}', [RolController::class, 'update']);
+Route::get('/rols/{id}', [RolController::class, 'show']);
+Route::patch('/rols/{id}', [RolController::class, 'updatePartial']);
+Route::delete('/rols/{id}', [RolController::class, 'destroy']);
 
+// Rutas de GÉNERO
+Route::get('/genero', [GeneroController::class, 'index']);
+Route::post('/genero', [GeneroController::class, 'store']);
+Route::put('/genero/{idGenero}', [GeneroController::class, 'update']);
+Route::get('/genero/{id}', [GeneroController::class, 'show']);
+Route::patch('/genero/{id}', [GeneroController::class, 'updatePartial']);
+Route::delete('/genero/{id}', [GeneroController::class, 'destroy']);
+
+// Rutas de NACIONALIDAD
 Route::get('/nacionalidad', [NacionalidadController::class, 'index']);
 Route::post('/nacionalidad', [NacionalidadController::class, 'store']);
 Route::put('/nacionalidad/{idGenero}', [NacionalidadController::class, 'update']);
@@ -33,23 +55,28 @@ Route::get('/nacionalidad/{id}', [NacionalidadController::class, 'show']);
 Route::patch('/nacionalidad/{id}', [NacionalidadController::class, 'updatePartial']);
 Route::delete('/nacionalidad/{id}', [NacionalidadController::class, 'destroy']);
 
-Route::get('/epss', [epsController::class, 'index']);
-Route::post('/epss', [epsController::class, 'store']);
-Route::put('/epss/{id}', [epsController::class, 'update']);
-Route::get('/epss/{id}', [epsController::class, 'show']);
-Route::patch('/epss/{id}', [epsController::class, 'updatePartial']);
-Route::delete('/epss/{id}', [epsController::class, 'destroy']);
+// Rutas de EPS
+Route::get('/epss', [EpsController::class, 'index']);
+Route::post('/epss', [EpsController::class, 'store']);
+Route::put('/epss/{id}', [EpsController::class, 'update']);
+Route::get('/epss/{id}', [EpsController::class, 'show']);
+Route::patch('/epss/{id}', [EpsController::class, 'updatePartial']);
+Route::delete('/epss/{id}', [EpsController::class, 'destroy']);
 
-Route::get('/estadocivil', [estadocivilController::class, 'index']);
-Route::post('/estadocivil', [estadocivilController::class, 'store']);
-Route::put('/estadocivil/{id}', [estadocivilController::class, 'update']);
-Route::get('/estadocivil/{id}', [estadocivilController::class, 'show']);
-Route::patch('/estadocivil/{id}', [estadocivilController::class, 'updatePartial']);
-Route::delete('/estadocivil/{id}', [estadocivilController::class, 'destroy']);
+// Rutas de ESTADO CIVIL
+Route::get('/estadocivil', [EstadoCivilController::class, 'index']);
+Route::post('/estadocivil', [EstadoCivilController::class, 'store']);
+Route::put('/estadocivil/{id}', [EstadoCivilController::class, 'update']);
+Route::get('/estadocivil/{id}', [EstadoCivilController::class, 'show']);
+Route::patch('/estadocivil/{id}', [EstadoCivilController::class, 'updatePartial']);
+Route::delete('/estadocivil/{id}', [EstadoCivilController::class, 'destroy']);
 
-Route::get('/hojasvida', [hojasvidaController::class, 'index']);
-Route::post('/hojasvida', [hojasvidaController::class, 'store']);
-Route::put('/hojasvida/{id}', [hojasvidaController::class, 'update']);
-Route::get('/hojasvida/{id}', [hojasvidaController::class, 'show']);
-Route::patch('/hojasvida/{id}', [hojasvidaController::class, 'updatePartial']);
-Route::delete('/hojasvida/{id}', [hojasvidaController::class, 'destroy']);
+// Rutas de HOJAS DE VIDA
+Route::get('/hojasvida', [HojasVidaController::class, 'index']);
+Route::post('/hojasvida', [HojasVidaController::class, 'store']);
+Route::put('/hojasvida/{id}', [HojasVidaController::class, 'update']);
+Route::get('/hojasvida/{id}', [HojasVidaController::class, 'show']);
+Route::patch('/hojasvida/{id}', [HojasVidaController::class, 'updatePartial']);
+Route::delete('/hojasvida/{id}', [HojasVidaController::class, 'destroy']);
+
+
