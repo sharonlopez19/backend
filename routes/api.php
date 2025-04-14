@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\usuarioshasrolController;
 use App\Http\Controllers\Api\tipopermisosController;
 use App\Http\Controllers\Api\permisosController;
 use App\Http\Controllers\Api\postulacionesController;
+use App\Http\Controllers\Api\pensionesController;
+use App\Http\Controllers\Api\tipohorasController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -131,3 +133,17 @@ Route::put('/postulaciones/{id}', [postulacionesController::class, 'update']);
 Route::get('/postulaciones/{id}', [postulacionesController::class, 'show']);
 Route::patch('/postulaciones/{id}', [postulacionesController::class, 'updatePartial']);
 Route::delete('/postulaciones/{id}', [postulacionesController::class, 'destroy']);
+
+Route::get('/pensiones', [pensionesController::class, 'index']);
+Route::post('/pensiones', [pensionesController::class, 'store']);
+Route::put('/pensiones/{id}', [pensionesController::class, 'update']);
+Route::get('/pensiones/{id}', [pensionesController::class, 'show']);
+Route::patch('/pensiones/{id}', [pensionesController::class, 'updatePartial']);
+Route::delete('/pensiones/{id}', [pensionesController::class, 'destroy']);
+
+Route::get('/tipohoras', [tipohorasController::class, 'index']);
+Route::post('/tipohoras', [tipohorasController::class, 'store']);
+Route::put('/tipohoras/{id}', [tipohorasController::class, 'update']);
+Route::get('/tipohoras/{id}', [tipohorasController::class, 'show']);
+Route::patch('/tipohoras/{id}', [tipohorasController::class, 'updatePartial']);
+Route::delete('/tipohoras/{id}', [tipohorasController::class, 'destroy']);
