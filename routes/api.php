@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\epsController;
 use App\Http\Controllers\Api\estadoCivilController;
 use App\Http\Controllers\Api\hojasvidaController;
 use App\Http\Controllers\Api\incapacidadController;
+use App\Http\Controllers\Api\pazysalvoController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -83,3 +84,10 @@ Route::put('/incapacidad/{id}', [incapacidadController::class, 'update']);
 Route::get('/incapacidad/{id}', [incapacidadController::class, 'show']);
 Route::patch('/incapacidad/{id}', [incapacidadController::class, 'updatePartial']);
 Route::delete('/incapacidad/{id}', [incapacidadController::class, 'destroy']);
+
+Route::get('/pazysalvo', [pazysalvoController::class, 'index']);
+Route::post('/pazysalvo', [pazysalvoController::class, 'store']);
+Route::put('/pazysalvo/{id}', [pazysalvoController::class, 'update']);
+Route::get('/pazysalvo/{id}', [pazysalvoController::class, 'show']);
+Route::patch('/pazysalvo/{id}', [pazysalvoController::class, 'updatePartial']);
+Route::delete('/pazysalvo/{id}', [pazysalvoController::class, 'destroy']);
