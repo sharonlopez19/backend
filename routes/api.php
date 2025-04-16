@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\permisosController;
 use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
+use App\Http\Controllers\api\vacantesController;
 use App\Models\CategoriaVacantes;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -150,6 +151,13 @@ Route::put('/categoriavacantes/{id}', [categoriaVacantesController::class, 'upda
 Route::get('/categoriavacantes/{id}', [categoriaVacantesController::class, 'show']);
 Route::patch('/categoriavacantes/{id}', [categoriaVacantesController::class, 'updatePartial']);
 Route::delete('/categoriavacantes/{id}', [categoriaVacantesController::class, 'destroy']);
+
+Route::get('/vacantes', [vacantesController::class, 'index']);
+Route::post('/vacantes', [vacantesController::class, 'store']);
+Route::put('/vacantes/{id}', [vacantesController::class, 'update']);
+Route::get('/vacantes/{id}', [vacantesController::class, 'show']);
+Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
+Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
  
  
