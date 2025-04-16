@@ -18,6 +18,15 @@ use App\Http\Controllers\Api\permisosController;
 use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
+use App\Http\Controllers\Api\RolPermisoController;
+
+
+Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
+
+
+Route::post('/rols/{rolId}/permisos', [RolPermisoController::class, 'asignarPermisos']);
+Route::get('/rols/{rolId}/permisos', [RolPermisoController::class, 'obtenerPermisos']);
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
