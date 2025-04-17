@@ -13,7 +13,7 @@ class User extends Authenticatable implements JWTSubject
 
     // Campos que pueden ser asignados masivamente
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','rol',
     ];
 
     /**

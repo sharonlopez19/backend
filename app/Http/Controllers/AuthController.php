@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Usuarios;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|confirmed|unique:users,email',
             'email_confirmation' => 'required|string|email',
             'password' => 'required|string|min:6|confirmed',
+            'rol'=>'required',
             'password_confirmation' => 'required|string|min:6',
         ]);
 
@@ -46,6 +48,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password), // Usar bcrypt para hashear la contraseña
+            'rol'=> $request->rol
         ]);
 
         // Generar token JWT
@@ -65,13 +68,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+        //$user = User::where('email', $request->email)->first();
         // Intentar autenticar al usuario y obtener el token
         if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
-
+        $user = JWTAuth::user();
         return response()->json([
+            'user' => $user,
             'token' => $token,
             'redirect' => '/directorio' // Redirigir desde Angular
         ]);

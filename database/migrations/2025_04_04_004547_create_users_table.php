@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('rol')->index('fk_users_rol');
             $table->timestamps();
         });
     }
