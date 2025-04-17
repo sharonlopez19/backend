@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\categoriaVacantesController;
+use App\Http\Controllers\api\contratoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\rolController;
@@ -158,6 +159,13 @@ Route::put('/vacantes/{id}', [vacantesController::class, 'update']);
 Route::get('/vacantes/{id}', [vacantesController::class, 'show']);
 Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
 Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
+
+Route::get('/contrato', [contratoController::class, 'index']);
+Route::post('/contrato', [contratoController::class, 'store']);
+Route::put('/contrato/{id}', [contratoController::class, 'update']);
+Route::get('/contrato/{id}', [contratoController::class, 'show']);
+Route::patch('/contrato/{id}', [contratoController::class, 'updatePartial']);
+Route::delete('/contrato/{id}', [contratoController::class, 'destroy']);
 
  
  
