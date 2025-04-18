@@ -20,8 +20,20 @@ use App\Http\Controllers\Api\permisosController;
 use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
+
+use App\Http\Controllers\Api\RolPermisoController;
+
+
+Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
+
+
+Route::post('/rols/{rolId}/permisos', [RolPermisoController::class, 'asignarPermisos']);
+Route::get('/rols/{rolId}/permisos', [RolPermisoController::class, 'obtenerPermisos']);
+
+
 use App\Http\Controllers\api\vacantesController;
 use App\Models\CategoriaVacantes;
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -32,7 +44,7 @@ Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 
 Route::middleware('auth:api')->group(function () {
     // aquí van todas las rutas protegidas
-    
+
 });
 
 // Rutas de ROL
@@ -146,6 +158,14 @@ Route::get('/pensiones/{id}', [pensionesController::class, 'show']);
 Route::patch('/pensiones/{id}', [pensionesController::class, 'updatePartial']);
 Route::delete('/pensiones/{id}', [pensionesController::class, 'destroy']);
 
+
+Route::get('/tipohoras', [tipohorasController::class, 'index']);
+Route::post('/tipohoras', [tipohorasController::class, 'store']);
+Route::put('/tipohoras/{id}', [tipohorasController::class, 'update']);
+Route::get('/tipohoras/{id}', [tipohorasController::class, 'show']);
+Route::patch('/tipohoras/{id}', [tipohorasController::class, 'updatePartial']);
+Route::delete('/tipohoras/{id}', [tipohorasController::class, 'destroy']);
+
 Route::get('/categoriavacantes', [categoriaVacantesController::class, 'index']);
 Route::post('/categoriavacantes', [categoriaVacantesController::class, 'store']);
 Route::put('/categoriavacantes/{id}', [categoriaVacantesController::class, 'update']);
@@ -160,12 +180,4 @@ Route::get('/vacantes/{id}', [vacantesController::class, 'show']);
 Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
 Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
-Route::get('/contrato', [contratoController::class, 'index']);
-Route::post('/contrato', [contratoController::class, 'store']);
-Route::put('/contrato/{id}', [contratoController::class, 'update']);
-Route::get('/contrato/{id}', [contratoController::class, 'show']);
-Route::patch('/contrato/{id}', [contratoController::class, 'updatePartial']);
-Route::delete('/contrato/{id}', [contratoController::class, 'destroy']);
 
- 
- 

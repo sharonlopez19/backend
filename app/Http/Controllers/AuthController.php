@@ -45,7 +45,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password, // No usar Hash::make aquí
+            'password' => bcrypt($request->password), // Usar bcrypt para hashear la contraseña
         ]);
 
         // Generar token JWT
@@ -66,6 +66,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        // Intentar autenticar al usuario y obtener el token
         if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
@@ -81,6 +82,7 @@ class AuthController extends Controller
      */
     public function me()
     {
+        // Retorna los datos del usuario autenticado
         return response()->json(Auth::user());
     }
 }
