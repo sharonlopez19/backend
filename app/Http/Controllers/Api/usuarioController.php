@@ -54,7 +54,8 @@ class usuarioController extends Controller
             'generoId' => 'required|integer',
             'tipoDocumentoId' => 'required|integer',
             'estadoCivilId' => 'required|integer',
-            'pensionesCodigo' => 'required|string|size:6'
+            'pensionesCodigo' => 'required|string|size:6',
+            'usersId' => 'required|integer'
         ]);
     
         if ($validator->fails()) {
@@ -85,7 +86,8 @@ class usuarioController extends Controller
                 'generoId' => $request->generoId,
                 'tipoDocumentoId' => $request->tipoDocumentoId,
                 'estadoCivilId' => $request->estadoCivilId,
-                'pensionesCodigo' => $request->pensionesCodigo
+                'pensionesCodigo' => $request->pensionesCodigo,
+                'usersId' => $request->usersId
             ]);
     
             return response()->json([
@@ -167,7 +169,8 @@ class usuarioController extends Controller
             'generoId' => 'required|integer',
             'tipoDocumentoId' => 'required|integer',
             'estadoCivilId' => 'required|integer',
-            'pensionesCodigo' => 'required|string|size:6'
+            'pensionesCodigo' => 'required|string|size:6',
+            'usersId' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $data = [
@@ -195,16 +198,17 @@ class usuarioController extends Controller
         $usuario->tipoDocumentoId = $request->tipoDocumentoId;
         $usuario->estadoCivilId = $request->estadoCivilId;
         $usuario->pensionesCodigo = $request->pensionesCodigo;
+        $usuario->usersId = $request->usersId;
         try {
             $usuario->save();
             $data = [
-                "hojasvida" => $usuario,
+                "usuarios" => $usuario,
                 "status" => 200
             ];
             return response()->json([$data], 200);
         } catch (\Exception $e) {
             return response()->json([
-                "mensaje" => "Error al modificar la hoja de vida",
+                "mensaje" => "Error al modificar el usuario",
                 "error" => $e->getMessage(),
                 "status" => 500
             ], 500);
@@ -239,7 +243,8 @@ class usuarioController extends Controller
             'generoId' => 'integer',
             'tipoDocumentoId' => 'integer',
             'estadoCivilId' => 'integer',
-            'pensionesCodigo' => 'string|size:6'
+            'pensionesCodigo' => 'string|size:6',
+            'usersId' => 'integer',
         ]);
         if ($validator->fails()) {
             $data = [
@@ -306,7 +311,9 @@ class usuarioController extends Controller
         if ($request->has("pensionesCodigo")) {
             $usuario->pensionesCodigo = $request->pensionesCodigo;
         }
-        
+        if ($request->has("usersId")) {
+            $usuario->usersId = $request->usersId;
+        }
         $usuario->save();
         $data = [
             "rol" => $usuario,

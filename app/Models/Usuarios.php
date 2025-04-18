@@ -30,6 +30,7 @@ class Usuarios extends Model
         'generoId',
         'tipoDocumentoId',
         'estadoCivilId',
-        'pensionesCodigo'
+        'pensionesCodigo',
+        'usersId'
     ];
 }
