@@ -211,4 +211,3 @@ Route::get('/explaboral/{id}', [experienciaLaboralController::class, 'show']);
 Route::patch('/explaboral/{id}', [experienciaLaboralController::class, 'updatePartial']);
 Route::delete('/explaboral/{id}', [experienciaLaboralController::class, 'destroy']);
 
- 
