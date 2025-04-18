@@ -22,7 +22,7 @@ use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
 
 use App\Http\Controllers\Api\RolPermisoController;
-
+use App\Http\Controllers\api\tipoContratoController;
 
 Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 
@@ -181,3 +181,18 @@ Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
 Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
 
+Route::get('/contrato', [contratoController::class, 'index']);
+Route::post('/contrato', [contratoController::class, 'store']);
+Route::put('/contrato/{id}', [contratoController::class, 'update']);
+Route::get('/contrato/{id}', [contratoController::class, 'show']);
+Route::patch('/contrato/{id}', [contratoController::class, 'updatePartial']);
+Route::delete('/contrato/{id}', [contratoController::class, 'destroy']);
+
+Route::get('/tipocontrato', [tipoContratoController::class, 'index']);
+Route::post('/tipocontrato', [tipoContratoController::class, 'store']);
+Route::put('/tipocontrato/{id}', [tipoContratoController::class, 'update']);
+Route::get('/tipocontrato/{id}', [tipoContratoController::class, 'show']);
+Route::patch('/tipocontrato/{id}', [tipoContratoController::class, 'updatePartial']);
+Route::delete('/tipocontrato/{id}', [tipoContratoController::class, 'destroy']);
+
+ 
