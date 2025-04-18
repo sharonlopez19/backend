@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\epsController;
 use App\Http\Controllers\Api\estadoCivilController;
 use App\Http\Controllers\api\estudiosController;
+use App\Http\Controllers\api\experienciaLaboralController;
 use App\Http\Controllers\Api\hojasvidaController;
 use App\Http\Controllers\Api\incapacidadController;
 use App\Http\Controllers\Api\pazysalvoController;
@@ -202,5 +203,12 @@ Route::put('/estudios/{id}', [estudiosController::class, 'update']);
 Route::get('/estudios/{id}', [estudiosController::class, 'show']);
 Route::patch('/estudios/{id}', [estudiosController::class, 'updatePartial']);
 Route::delete('/estudios/{id}', [estudiosController::class, 'destroy']);
+
+Route::get('/explaboral', [experienciaLaboralController::class, 'index']);
+Route::post('/explaboral', [experienciaLaboralController::class, 'store']);
+Route::put('/explaboral/{id}', [experienciaLaboralController::class, 'update']);
+Route::get('/explaboral/{id}', [experienciaLaboralController::class, 'show']);
+Route::patch('/explaboral/{id}', [experienciaLaboralController::class, 'updatePartial']);
+Route::delete('/explaboral/{id}', [experienciaLaboralController::class, 'destroy']);
 
  
