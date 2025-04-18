@@ -34,6 +34,7 @@ Route::get('/rols/{rolId}/permisos', [RolPermisoController::class, 'obtenerPermi
 
 
 use App\Http\Controllers\api\vacantesController;
+use App\Http\Controllers\api\vacantesHasPostulacionesController;
 use App\Models\CategoriaVacantes;
 
 

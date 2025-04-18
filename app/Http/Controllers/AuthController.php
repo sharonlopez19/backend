@@ -18,17 +18,16 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        // Validar los datos del usuario
+        // Validar campos, incluyendo confirmación de email y contraseña
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|confirmed|unique:users,email',
             'email_confirmation' => 'required|string|email',
             'password' => 'required|string|min:6|confirmed',
+            'rol'=>'required',
             'password_confirmation' => 'required|string|min:6',
-            'rol' => 'required|integer|in:1,2,3,4,5', // Ajustar según los valores permitidos
         ]);
 
-        // Retornar errores de validación
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Error en el registro.',
@@ -36,22 +35,32 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Crear el usuario
+        // Validar coincidencia de confirmaciones manualmente (opcional)
+        if (
+            $request->email !== $request->email_confirmation ||
+            $request->password !== $request->password_confirmation
+        ) {
+            return response()->json([
+                'message' => 'Los campos de confirmación no coinciden.'
+            ], 422);
+        }
+
+        // Crear usuario (la contraseña se hashea automáticamente en el modelo)
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'rol' => $request->rol,
+            'password' => bcrypt($request->password), // Usar bcrypt para hashear la contraseña
+            'rol'=> $request->rol
         ]);
 
-        // Generar un token JWT para el usuario
+        // Generar token JWT
         $token = JWTAuth::fromUser($user);
 
         return response()->json([
             'message' => 'Usuario registrado correctamente 🎉',
             'token' => $token,
             'user' => $user,
-            'redirect' => '/directorio'
+            'redirect' => '/directorio' // Para redirigir desde Angular
         ], 201);
     }
 
@@ -81,6 +90,15 @@ class AuthController extends Controller
             'token' => $token,
             'redirect' => '/directorio' // Ruta de redirección
         ]);
+    }
+    public function index()
+    {
+        $users = User::all();
+        return response()->json([
+            'user' => $users,
+
+
+        ], 200);
     }
 
     /**
