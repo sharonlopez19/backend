@@ -31,6 +31,7 @@ return new class extends Migration
             $table->integer('tipoDocumentoId')->index('fk_usuario_tipodedocumento');
             $table->integer('estadoCivilId')->index('fk_usuario_estadocivil');
             $table->char('pensionesCodigo', 6)->index('fk_usuario_pensiones');
+            $table->integer('usersId', 6)->index('fk_usuario_users');
         });
     }
 
