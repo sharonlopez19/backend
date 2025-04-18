@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         
-        $dd = "";
+        $dd = "SI";
         if ($dd == "SI") {
             // Validar campos, incluyendo confirmación de email y contraseña
             $validator = Validator::make($request->all(), [
@@ -25,8 +25,8 @@ class AuthController extends Controller
                 'email' => 'required|string|email|confirmed|unique:users,email',
                 'email_confirmation' => 'required|string|email',
                 'password' => 'required|string|min:6|confirmed',
-                'rol' => 'required',
                 'password_confirmation' => 'required|string|min:6',
+                'rol' => 'required',
             ]);
 
             if ($validator->fails()) {
