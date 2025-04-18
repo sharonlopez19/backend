@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\NacionalidadController;
 use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\epsController;
 use App\Http\Controllers\Api\estadoCivilController;
+use App\Http\Controllers\api\estudiosController;
 use App\Http\Controllers\Api\hojasvidaController;
 use App\Http\Controllers\Api\incapacidadController;
 use App\Http\Controllers\Api\pazysalvoController;
@@ -194,5 +195,12 @@ Route::put('/tipocontrato/{id}', [tipoContratoController::class, 'update']);
 Route::get('/tipocontrato/{id}', [tipoContratoController::class, 'show']);
 Route::patch('/tipocontrato/{id}', [tipoContratoController::class, 'updatePartial']);
 Route::delete('/tipocontrato/{id}', [tipoContratoController::class, 'destroy']);
+
+Route::get('/estudios', [estudiosController::class, 'index']);
+Route::post('/estudios', [estudiosController::class, 'store']);
+Route::put('/estudios/{id}', [estudiosController::class, 'update']);
+Route::get('/estudios/{id}', [estudiosController::class, 'show']);
+Route::patch('/estudios/{id}', [estudiosController::class, 'updatePartial']);
+Route::delete('/estudios/{id}', [estudiosController::class, 'destroy']);
 
  
