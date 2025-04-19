@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\categoriaHasUsuarioController;
 use App\Http\Controllers\api\categoriaVacantesController;
 use App\Http\Controllers\api\contratoController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,9 @@ use App\Http\Controllers\Api\tipohorasController;
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
 use App\Http\Controllers\Api\tipodocumentoController;
-
+use App\Http\Controllers\api\vacantesController;
+use App\Http\Controllers\api\vacantesHasPostulacionesController;
+use App\Models\CategoriaVacantes;
 Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 
 
@@ -34,9 +37,7 @@ Route::post('/rols/{rolId}/permisos', [RolPermisoController::class, 'asignarPerm
 Route::get('/rols/{rolId}/permisos', [RolPermisoController::class, 'obtenerPermisos']);
 
 
-use App\Http\Controllers\api\vacantesController;
-use App\Http\Controllers\api\vacantesHasPostulacionesController;
-use App\Models\CategoriaVacantes;
+
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -219,3 +220,18 @@ Route::put('/tipodocumento/{id}', [tipodocumentoController::class, 'update']);
 Route::get('/tipodocumento/{id}', [tipodocumentoController::class, 'show']);
 Route::patch('/tipodocumento/{id}', [tipodocumentoController::class, 'updatePartial']);
 Route::delete('/tipodocumento/{id}', [tipodocumentoController::class, 'destroy']);
+
+Route::get('/vachaspos', [vacantesHasPostulacionesController::class, 'index']);
+Route::post('/vachaspos', [vacantesHasPostulacionesController::class, 'store']);
+Route::put('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'update']);
+Route::get('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'show']);
+Route::patch('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'updatePartial']);
+Route::delete('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'destroy']);
+
+Route::get('/catvachasusu', [categoriaHasUsuarioController::class, 'index']);
+Route::post('/catvachasusu', [categoriaHasUsuarioController::class, 'store']);
+Route::put('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'update']);
+Route::get('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'show']);
+Route::patch('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'updatePartial']);
+Route::delete('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'destroy']);
+
