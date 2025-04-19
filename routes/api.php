@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\categoriaHasUsuarioController;
 use App\Http\Controllers\api\categoriaVacantesController;
 use App\Http\Controllers\api\contratoController;
 use Illuminate\Support\Facades\Route;
@@ -218,5 +219,12 @@ Route::put('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'updat
 Route::get('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'show']);
 Route::patch('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'updatePartial']);
 Route::delete('/vachaspos/{id}', [vacantesHasPostulacionesController::class, 'destroy']);
+
+Route::get('/catvachasusu', [categoriaHasUsuarioController::class, 'index']);
+Route::post('/catvachasusu', [categoriaHasUsuarioController::class, 'store']);
+Route::put('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'update']);
+Route::get('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'show']);
+Route::patch('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'updatePartial']);
+Route::delete('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'destroy']);
 
  
