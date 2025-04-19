@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\tipohorasController;
 
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
+use App\Http\Controllers\Api\tipodocumentoController;
 
 Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 
@@ -212,3 +213,9 @@ Route::get('/explaboral/{id}', [experienciaLaboralController::class, 'show']);
 Route::patch('/explaboral/{id}', [experienciaLaboralController::class, 'updatePartial']);
 Route::delete('/explaboral/{id}', [experienciaLaboralController::class, 'destroy']);
 
+Route::get('/tipodocumento', [tipodocumentoController::class, 'index']);
+Route::post('/tipodocumento', [tipodocumentoController::class, 'store']);
+Route::put('/tipodocumento/{id}', [tipodocumentoController::class, 'update']);
+Route::get('/tipodocumento/{id}', [tipodocumentoController::class, 'show']);
+Route::patch('/tipodocumento/{id}', [tipodocumentoController::class, 'updatePartial']);
+Route::delete('/tipodocumento/{id}', [tipodocumentoController::class, 'destroy']);
