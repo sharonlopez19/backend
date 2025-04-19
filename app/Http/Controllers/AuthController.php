@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Usuarios;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class AuthController extends Controller
 {
@@ -67,18 +69,36 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        // Extraer las credenciales del request
         $credentials = $request->only('email', 'password');
-        //$user = User::where('email', $request->email)->first();
-        // Intentar autenticar al usuario y obtener el token
+
+        // Registrar logs para depuración
+        Log::info('Intento de login', ['email' => $request->email ?? 'Correo no proporcionado']);
+
+        // Intentar autenticar al usuario
         if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Credenciales incorrectas'], 401);
+            Log::error('Error en login: credenciales incorrectas', ['email' => $request->email ?? 'Correo no proporcionado']);
+            return response()->json(['error' => 'Correo o contraseña incorrectos'], 401);
         }
+
+        // Obtener el usuario autenticado
         $user = JWTAuth::user();
+
+        // Responder con token y datos de usuario
         return response()->json([
             'user' => $user,
             'token' => $token,
-            'redirect' => '/directorio' // Redirigir desde Angular
+            'redirect' => '/directorio' // Ruta de redirección
         ]);
+    }
+    public function index()
+    {
+        $users = User::all();
+        return response()->json([
+            'user' => $users,
+
+
+        ], 200);
     }
 
     /**
@@ -86,7 +106,9 @@ class AuthController extends Controller
      */
     public function me()
     {
-        // Retorna los datos del usuario autenticado
-        return response()->json(Auth::user());
+        return response()->json([
+            'message' => 'Usuario autenticado con éxito',
+            'user' => Auth::user()
+        ]);
     }
 }
