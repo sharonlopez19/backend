@@ -12,12 +12,12 @@ class contratoController extends Controller
 
     public function index()
     {
-        $contrato=Contrato::all();
-        $data=[
+        $contrato = Contrato::all();
+        $data = [
             "contrato" => $contrato,
             "status" => 200
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     /**
@@ -25,62 +25,49 @@ class contratoController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
+            'numDocumento' => 'required|integer',
+            'tipoContratoId' => 'required|integer',
             'estado' => 'required|integer',
             'fechaIngreso' => 'required|date',
-            'fechaFinal'=>'required|date',
-            'documento' => 'required|string|max:100',
-            'tipoContratoId' => 'required',
-            'numDocumento'=> 'required'
+            'fechaFinal' => 'required|date',
+            'documento' => 'nullable|file|max:5120' // 5MB max
         ]);
-    
-        if ($validator->fails()) {
-            return response()->json([
-                'mensaje' => 'Error en la validación de datos de contrato',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ], 400);
+
+        // Si viene un archivo, lo subimos
+        if ($request->hasFile('documento')) {
+            $file = $request->file('documento');
+            $folder = 'Archivos/' . $request->input('numDocumento');
+
+            // crea carpeta si no existe, guarda archivo
+            $path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
+
+            // guardamos la URL relativa
+            $validated['documento'] = 'storage/' . $path;
         }
-    
-        try {
-            $contrato = Contrato::create([
-                'estado' => $request->estado,
-                'fechaIngreso' => $request->fechaIngreso,
-                'fechaFinal' => $request->fechaFinal,
-                'documento' => $request->documento,
-                'tipoContratoId' => $request->tipoContratoId,
-                'numDocumento' => $request->numDocumento,
-                
-            ]);
-    
-            return response()->json([
-                'mensaje' => 'Contrato creado correctamente',
-                'contrato' => $contrato,
-                'status' => 201
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'mensaje' => 'Error al crear el contrato',
-                'error' => $e->getMessage(),
-                'status' => 500
-            ], 500);
-        }
-        
-        
-        
+
+        // Guardar contrato
+        $contrato = Contrato::create($validated);
+
+        return response()->json([
+            'mensaje' => 'Contrato creado correctamente',
+            'contrato' => $contrato,
+            'status' => 201
+        ]);
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        $contrato=Contrato::find($id);
-        $data=[
+        $contrato = Contrato::find($id);
+        $data = [
             "contrato" => $contrato,
             "status" => 200
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     /**
@@ -116,10 +103,10 @@ class contratoController extends Controller
         $validator = Validator::make($request->all(), [
             'estado' => 'required|integer',
             'fechaIngreso' => 'required|date',
-            'fechaFinal'=>'required|date',
+            'fechaFinal' => 'required|date',
             'documento' => 'required|string|max:100',
             'tipoContratoId' => 'required',
-            'numDocumento'=> 'required'
+            'numDocumento' => 'required'
         ]);
         if ($validator->fails()) {
             $data = [
@@ -129,12 +116,12 @@ class contratoController extends Controller
             return response()->json([$data], 400);
         }
 
-                $contrato->estado = $request->estado;
-                $contrato->fechaIngreso = $request->fechaIngreso;
-                $contrato->fechaFinal = $request->fechaFinal;
-                $contrato->documento = $request->documento;
-                $contrato->tipoContratoId = $request->tipoContratoId;
-                $contrato->numDocumento = $request->numDocumento;
+        $contrato->estado = $request->estado;
+        $contrato->fechaIngreso = $request->fechaIngreso;
+        $contrato->fechaFinal = $request->fechaFinal;
+        $contrato->documento = $request->documento;
+        $contrato->tipoContratoId = $request->tipoContratoId;
+        $contrato->numDocumento = $request->numDocumento;
 
         try {
             $contrato->save();
@@ -164,10 +151,10 @@ class contratoController extends Controller
         $validator = Validator::make($request->all(), [
             'estado' => 'integer',
             'fechaIngreso' => 'date',
-            'fechaFinal'=>'date',
+            'fechaFinal' => 'date',
             'documento' => 'string|max:100',
             'tipoContratoId' => 'integer',
-            'numDocumento'=> 'integer'
+            'numDocumento' => 'integer'
         ]);
         if ($validator->fails()) {
             $data = [
@@ -189,7 +176,7 @@ class contratoController extends Controller
         if ($request->has("fechaFinal")) {
             $contrato->fechaFinal = $request->fechaFinal;
         }
-        
+
         if ($request->has("documento")) {
             $contrato->documento = $request->documento;
         }
@@ -201,9 +188,9 @@ class contratoController extends Controller
         if ($request->has("numDocumento")) {
             $contrato->numDocumento = $request->numDocumento;
         }
-        
-        
-        
+
+
+
         $contrato->save();
         $data = [
             "contrato:" => $contrato,
