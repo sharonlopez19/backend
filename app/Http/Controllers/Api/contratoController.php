@@ -40,7 +40,10 @@ class contratoController extends Controller
             $folder = 'Archivos/' . $request->input('numDocumento');
 
             // crea carpeta si no existe, guarda archivo
-            $path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
+            //$path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $request->input('numDocumento') . '.' . $extension;
+            $path = $file->storeAs($folder, $filename, 'public');
 
             // guardamos la URL relativa
             $validated['documento'] = 'storage/' . $path;
@@ -142,60 +145,71 @@ class contratoController extends Controller
     {
         $contrato = Contrato::find($id);
         if (!$contrato) {
-            $data = [
-                "mensage" => " No se encontro el contrato",
+            return response()->json([
+                "mensaje" => "No se encontró el contrato",
                 "status" => 404
-            ];
-            return response()->json([$data], 404);
-        }
-        $validator = Validator::make($request->all(), [
-            'estado' => 'integer',
-            'fechaIngreso' => 'date',
-            'fechaFinal' => 'date',
-            'documento' => 'string|max:100',
-            'tipoContratoId' => 'integer',
-            'numDocumento' => 'integer'
-        ]);
-        if ($validator->fails()) {
-            $data = [
-                "mesaje " => "Error al validar el contrato",
-                "errors" => $validator->errors(),
-                "status" => 400
-            ];
-            return response()->json([$data], 400);
+            ], 404);
         }
 
+        $validator = Validator::make($request->all(), [
+            'numDocumento' => 'nullable|integer',
+            'tipoContratoId' => 'nullable|integer',
+            'estado' => 'nullable|integer',
+            'fechaIngreso' => 'nullable|date',
+            'fechaFinal' => 'nullable|date',
+            'documento' => 'nullable|file|max:5120'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "mensaje" => "Error al validar el contrato",
+                "errors" => $validator->errors(),
+                "status" => 400
+            ], 400);
+        }
+
+        // Solo actualiza si se recibe cada campo
         if ($request->has("estado")) {
             $contrato->estado = $request->estado;
         }
-
+    
         if ($request->has("fechaIngreso")) {
             $contrato->fechaIngreso = $request->fechaIngreso;
         }
-
+    
         if ($request->has("fechaFinal")) {
             $contrato->fechaFinal = $request->fechaFinal;
         }
-
-        if ($request->has("documento")) {
-            $contrato->documento = $request->documento;
-        }
-
+    
         if ($request->has("tipoContratoId")) {
             $contrato->tipoContratoId = $request->tipoContratoId;
         }
-
+    
         if ($request->has("numDocumento")) {
             $contrato->numDocumento = $request->numDocumento;
         }
-
-
-
+    
+        // Documento (archivo)
+        if ($request->hasFile('documento')) {
+            $file = $request->file('documento');
+            $numDocumento = $request->input('numDocumento');
+            $folder = 'Archivos/' . $numDocumento;
+    
+            $extension = $file->getClientOriginalExtension();
+            $filename = $numDocumento . '.' . $extension;
+    
+            $path = $file->storeAs($folder, $filename, 'public');
+    
+            // ✅ Actualiza la ruta en la base de datos
+            $contrato->documento = 'storage/' . $path;
+        }
+        
         $contrato->save();
-        $data = [
-            "contrato:" => $contrato,
+    
+        return response()->json([
+            "mensaje" => "Contrato actualizado correctamente",
+            "contrato" => $contrato,
             "status" => 200
-        ];
-        return response()->json([$data], 200);
+        ], 200);
     }
 }
