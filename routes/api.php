@@ -156,6 +156,7 @@ Route::put('/postulaciones/{id}', [postulacionesController::class, 'update']);
 Route::get('/postulaciones/{id}', [postulacionesController::class, 'show']);
 Route::patch('/postulaciones/{id}', [postulacionesController::class, 'updatePartial']);
 Route::delete('/postulaciones/{id}', [postulacionesController::class, 'destroy']);
+Route::get('/postulaciones/search', [PostulacionesController::class, 'searchByVacantesId']); 
 
 Route::get('/pensiones', [pensionesController::class, 'index']);
 Route::post('/pensiones', [pensionesController::class, 'store']);
