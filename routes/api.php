@@ -187,7 +187,7 @@ Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
 
 Route::get('/contrato', [contratoController::class, 'index']);
-Route::post('/contrato/{id}/actualizar', [ContratoController::class, 'updatePartial']);
+Route::patch('/contrato/{id}/actualizar', [contratoController::class, 'updatePartial']);
 Route::post('/contrato', [contratoController::class, 'store']);
 Route::put('/contrato/{id}', [contratoController::class, 'update']);
 Route::get('/contrato/{id}', [contratoController::class, 'show']);
