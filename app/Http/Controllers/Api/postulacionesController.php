@@ -5,17 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Postulaciones;
-use App\Models\Vacantes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 
 class PostulacionesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $postulaciones = Postulaciones::all();
+            $query = Postulaciones::query();
+
+            if ($request->has('vacantesId')) {
+                $query->where('vacantesId', $request->input('vacantesId'));
+            }
+
+            $postulaciones = $query->get();
 
             return response()->json([
                 'data' => $postulaciones
@@ -50,11 +55,10 @@ class PostulacionesController extends Controller
         }
     }
 
-    public function searchByVacantesId(Request $request)
+    // === MÉTODO CORREGIDO PARA RECIBIR ID COMO RUTA ===
+    public function searchByVacantesId($vacantesId)
     {
         try {
-            $vacantesId = $request->query('vacantesId');
-
             if (empty($vacantesId) || !is_numeric($vacantesId)) {
                 return response()->json([
                     'message' => 'Parámetro vacantesId inválido o faltante.'
