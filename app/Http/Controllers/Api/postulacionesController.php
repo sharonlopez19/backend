@@ -6,226 +6,163 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Postulaciones;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
-class postulacionesController extends Controller
+class PostulacionesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $postulaciones = Postulaciones::all();
-        if (!$postulaciones) {
-            return response()->json([
-                'mensaje' => 'No retorna por error en DB',
-                'errors' => $postulaciones->errors(),
-                'status' => 400
-            ], 400);
-        } else {
+        try {
+            $query = Postulaciones::query();
 
-            $data = [
-                "permisos" => $postulaciones,
-                "status" => 200
-            ];
-            return response()->json($data, 200);
+            if ($request->has('vacantesId')) {
+                $query->where('vacantesId', $request->input('vacantesId'));
+            }
+
+            $postulaciones = $query->get();
+
+            return response()->json([
+                'data' => $postulaciones
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al obtener lista de postulaciones (Api\PostulacionesController::index): ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrió un error al obtener las postulaciones.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($idPostulaciones)
     {
-        //
+        try {
+            $postulacion = Postulaciones::find($idPostulaciones);
+
+            if (!$postulacion) {
+                return response()->json(['message' => 'Postulación no encontrada'], 404);
+            }
+
+            return response()->json([
+                'data' => $postulacion
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al obtener postulación con ID ' . $idPostulaciones . ' (Api\PostulacionesController::show): ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrió un error al obtener la postulación.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // === MÉTODO CORREGIDO PARA RECIBIR ID COMO RUTA ===
+    public function searchByVacantesId($vacantesId)
+    {
+        try {
+            if (empty($vacantesId) || !is_numeric($vacantesId)) {
+                return response()->json([
+                    'message' => 'Parámetro vacantesId inválido o faltante.'
+                ], 400);
+            }
+
+            $vacantesId = (int) $vacantesId;
+
+            $postulaciones = Postulaciones::where('vacantesId', $vacantesId)->get();
+
+            return response()->json([
+                'results' => $postulaciones
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al buscar postulaciones por Vacante ID (Api\PostulacionesController::searchByVacantesId): ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrió un error al realizar la búsqueda.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateStatus(Request $request, $idPostulaciones)
+    {
+        try {
+            $postulacion = Postulaciones::find($idPostulaciones);
+
+            if (!$postulacion) {
+                return response()->json(['message' => 'Postulación no encontrada'], 404);
+            }
+
+            $validator = Validator::make($request->all(), [
+                'estado' => ['required', 'string', Rule::in(['Pendiente', 'Aceptado', 'Rechazado'])],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Error de validación del estado',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+
+            $nuevoEstadoString = $request->input('estado');
+            $nuevoEstadoTinyint = $this->mapEstadoToTinyint($nuevoEstadoString);
+
+            $postulacion->estado = $nuevoEstadoTinyint;
+            $postulacion->save();
+
+            return response()->json([
+                'message' => 'Estado de postulación actualizado con éxito',
+                'postulacion' => $postulacion
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar estado de postulación con ID ' . $idPostulaciones . ' (Api\PostulacionesController::updateStatus): ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrió un error al actualizar el estado de la postulación.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    private function mapEstadoToTinyint(string $estadoString): int
+    {
+        switch ($estadoString) {
+            case 'Aceptado': return 1;
+            case 'Rechazado': return 2;
+            case 'Pendiente':
+            default: return 0;
+        }
+    }
+
     public function store(Request $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            
-            'fechaPostulacion' => 'required|date',
-            'estado' => 'required|integer',
-            'vacantesId' => 'required|integer'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'mensaje' => 'Error en la validación de datos de permisos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ], 400);
-        }
-
         try {
-
-
-            $postulaciones = Postulaciones::create([
-                
-                'fechaPostulacion' => $request->fechaPostulacion,
-                'estado' => $request->estado,
-                'vacantesId' => $request->vacantesId
-
-            ]);
-
-            return response()->json([
-                'mensaje' => 'postulacion creada correctamente',
-                'permisos' => $postulaciones,
-                'status' => 201
-            ], 201);
-
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'mensaje' => 'Error al crear el usuariohasrol',
-                'error' => $e->getMessage(),
-                'status' => 500
-            ], 500);
-        }
-
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $user = Postulaciones::find($id);
-        if ($user) {
-            $data = [
-                "permisos" => $user,
-                "status" => 200
-            ];
-            return response()->json($data, 200);
-        } else {
-            return response()->json([
-                'mensaje' => 'El usuario no existe',
-                'status' => 400
-            ], 500);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function destroy($id)
-    {
-
-        $postulaciones = Postulaciones::find($id);
-        if (!$postulaciones) {
-            $data = [
-                "mensage" => " No se encontro permisos",
-                "status" => 404
-            ];
-            return response()->json([$data], 404);
-        } else {
-            $postulaciones->delete();
-            $data = [
-                "permisos" => 'usuariohasrol eliminado',
-                "status" => 200
-            ];
-            return response()->json([$data], 200);
-        }
-
-    }
-    public function update(Request $request, $id)
-    {
-        $postulaciones = Postulaciones::find($id);
-        if (!$postulaciones) {
-            $data = [
-                "mensage" => " No se encontro permisos",
-                "status" => 404
-            ];
-            return response()->json([$data], 404);
-        } else {
-
             $validator = Validator::make($request->all(), [
-                
-                'fechaPostulacion' => 'required|date',
-                'estado' => 'required|integer',
-                'vacantesId' => 'required|integer',
-                
+                'vacantesId' => 'required|integer|exists:vacantes,idVacantes',
+                'estado' => ['required', 'string', Rule::in(['Pendiente', 'Aceptado', 'Rechazado'])],
             ]);
+
             if ($validator->fails()) {
-                $data = [
-                    "errors" => $validator->errors(),
-                    "status" => 400
-                ];
-                return response()->json([$data], 400);
-            }
-
-           
-            $postulaciones->fechaPostulacion = $request->fechaPostulacion;
-            $postulaciones->estado = $request->estado;
-            $postulaciones->vacantesId = $request->vacantesId;
-
-            try {
-                $postulaciones->save();
-                $data = [
-                    "permisos" => $postulaciones,
-                    "status" => 200
-                ];
-                return response()->json([$data], 200);
-            } catch (\Exception $e) {
                 return response()->json([
-                    "mensaje" => "Error al modificar el usuario has rol",
-                    "error" => $e->getMessage(),
-                    "status" => 500
-                ], 500);
+                    'message' => 'Errores de validación',
+                    'errors' => $validator->errors(),
+                ], 422);
             }
-        }
-    }
-    public function updatePartial(Request $request, $id)
-    {
-        $postulaciones = Postulaciones::find($id);
-        if (!$postulaciones) {
-            $data = [
-                "mensage" => " No se encontro postulacion",
-                "status" => 404
-            ];
-            return response()->json([$data], 404);
-        } else {
 
-            $validator = Validator::make($request->all(), [
+            $estadoTinyint = $this->mapEstadoToTinyint($request->input('estado'));
 
-                'fechaPostulacion' => 'date',
-                'estado' => 'integer',
-                'vacantesId' => 'integer'
+            $postulacion = Postulaciones::create([
+                'vacantesId' => $request->input('vacantesId'),
+                'estado' => $estadoTinyint,
+                'fechaPostulacion' => now()->toDateString(),
             ]);
-            if ($validator->fails()) {
-                $data = [
-                    "mesaje " => "Error al validar vacantes",
-                    "errors" => $validator->errors(),
-                    "status" => 400
-                ];
-                return response()->json([$data], 400);
-            }
-            
-            $postulaciones->fechaPostulacion = $request->fechaPostulacion;
-            $postulaciones->estado = $request->estado;
-            $postulaciones->vacantesId = $request->vacantesId;
 
-            if ($request->has("estado")) {
-                $postulaciones->estado = $request->estado;
-            }
-            if ($request->has("fechaPostulacion")) {
-                $postulaciones->fechaPostulacion = $request->fechaPostulacion;
-            }
-            
-            if ($request->has("vacantesId")) {
-                $postulaciones->vacantesId = $request->vacantesId;
-            }
-            
-
-
-            $postulaciones->save();
-            $data = [
-                "permisos" => $postulaciones,
-                "status" => 200
-            ];
-            return response()->json([$data], 200);
+            return response()->json([
+                'message' => 'Postulación creada exitosamente',
+                'data' => $postulacion,
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error al crear postulación (PostulacionesController::store): ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrió un error al crear la postulación.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
