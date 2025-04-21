@@ -11,7 +11,8 @@ class pensionesController extends Controller
 {
     public function index()
     {
-        $pensiones = Pensiones::all();
+        
+        $pensiones = Pensiones::orderBy('nombrePensiones', 'asc')->get();
 
         $data = [
             "pensiones" => $pensiones,

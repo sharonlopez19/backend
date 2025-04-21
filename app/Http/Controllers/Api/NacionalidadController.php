@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Validator;
 class NacionalidadController extends Controller
 {
     public function index(){
-        $nacionalidad=Nacionalidad::all();
+        $nacionalidad = Nacionalidad::orderBy('nombre', 'asc')->get();
+
        
         $data=[
             "Nacionalidad" => $nacionalidad,
