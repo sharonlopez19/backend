@@ -1,167 +1,128 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\CategoriaVacantes;
 use Illuminate\Http\Request;
+use App\Models\CategoriaVacantes;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
-class categoriaVacantesController extends Controller
+class CategoriaVacantesController extends Controller
 {
     public function index()
     {
-        $categoriaVacantes=CategoriaVacantes::all();
-        $data=[
-            "categoriaVacantes" => $categoriaVacantes,
-            "status" => 200
-        ];
-        return response()->json($data,200);
+        try {
+            $categorias = CategoriaVacantes::all();
+
+            return response()->json([
+                'categoriavacantes' => $categorias
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error al obtener categorías de vacantes (Api\CategoriaVacantesController::index): ' . $e->getMessage());
+            return response()->json(['message' => 'Ocurrió un error al obtener las categorías.', 'error' => $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nomCategoria' => 'required|string|max:45',
+            'nomCategoria' => 'required|string|max:45|unique:categoriavacantes,nomCategoria',
         ]);
-    
+
         if ($validator->fails()) {
-            return response()->json([
-                'mensaje' => 'Error en la validación de datos de la categoria de vacantes',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ], 400);
+            return response()->json(['message' => 'Error de validación', 'errors' => $validator->errors()], 400);
         }
-    
+
         try {
-            $categoriaVacantes = CategoriaVacantes::create([
-                'nomCategoria' => $request->nomCategoria,
-                
-            ]);
-    
+            $categoria = new CategoriaVacantes();
+            $categoria->nomCategoria = $request->nomCategoria;
+            $categoria->save();
+
             return response()->json([
-                'mensaje' => 'categoria de vacante creada correctamente',
-                'categoriaVacantes' => $categoriaVacantes,
-                'status' => 201
+                'message' => 'Categoría creada con éxito',
+                'categoria' => $categoria
             ], 201);
+
         } catch (\Exception $e) {
-            return response()->json([
-                'mensaje' => 'Error al crear el categoria de vacante',
-                'error' => $e->getMessage(),
-                'status' => 500
-            ], 500);
+             Log::error('Error al crear categoría de vacantes (Api\CategoriaVacantesController::store): ' . $e->getMessage());
+            return response()->json(['message' => 'Ocurrió un error al crear la categoría.', 'error' => $e->getMessage()], 500);
         }
-        
-        
-        
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $categoriaVacantes=CategoriaVacantes::find($id);
-        $data=[
-            "categoriaVacantes" => $categoriaVacantes,
-            "status" => 200
-        ];
-        return response()->json($data,200);
+        try {
+            $categoria = CategoriaVacantes::find($id);
+
+            if (!$categoria) {
+                return response()->json(['message' => 'Categoría no encontrada'], 404);
+            }
+
+            return response()->json($categoria, 200);
+
+        } catch (\Exception $e) {
+             Log::error('Error al obtener categoría de vacantes con ID ' . $id . ' (Api\CategoriaVacantesController::show): ' . $e->getMessage());
+            return response()->json(['message' => 'Ocurrió un error al obtener la categoría.', 'error' => $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function destroy($id)
-    {
-        $incapacidad = CategoriaVacantes::find($id);
-        if (!$incapacidad) {
-            $data = [
-                "mensage" => " No se encontro la categoria de la vacante",
-                "status" => 404
-            ];
-            return response()->json([$data], 404);
-        }
-        $incapacidad->delete();
-        $data = [
-            "categoriaVacantes:" => 'Categoria de vacante eliminado',
-            "status" => 200
-        ];
-        return response()->json([$data], 200);
-    }
     public function update(Request $request, $id)
     {
-        $categoriaVacantes = CategoriaVacantes::find($id);
-        if (!$categoriaVacantes) {
-            $data = [
-                "mensage" => " No se encontro la categoria de la vacante",
-                "status" => 404
-            ];
-            return response()->json([$data], 404);
-        }
-        $validator = Validator::make($request->all(), [
-            'nomCategoria' => 'required|string|max:50',
-        ]);
-        if ($validator->fails()) {
-            $data = [
-                "errors" => $validator->errors(),
-                "status" => 400
-            ];
-            return response()->json([$data], 400);
-        }
-        $categoriaVacantes->nomCategoria = $request->nomCategoria;
+        $categoria = CategoriaVacantes::find($id);
 
+        if (!$categoria) {
+            return response()->json(['message' => 'Categoría no encontrada'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'nomCategoria' => [
+                'required',
+                'string',
+                'max:45',
+                Rule::unique('categoriavacantes', 'nomCategoria')->ignore($categoria->idCatVac, 'idCatVac'),
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Error de validación', 'errors' => $validator->errors()], 400);
+        }
 
         try {
-            $categoriaVacantes->save();
-            $data = [
-                "categoriaVacantes" => $categoriaVacantes,
-                "status" => 200
-            ];
-            return response()->json([$data], 200);
+            $categoria->nomCategoria = $request->nomCategoria;
+            $categoria->save();
+
+            return response()->json(['message' => 'Categoría actualizada con éxito', 'categoria' => $categoria], 200);
+
         } catch (\Exception $e) {
-            return response()->json([
-                "mensaje" => "Error al modificar la categoria de la vacante",
-                "error" => $e->getMessage(),
-                "status" => 500
-            ], 500);
+            Log::error('Error al actualizar categoría de vacantes con ID ' . $id . ' (Api\CategoriaVacantesController::update): ' . $e->getMessage());
+            return response()->json(['message' => 'Ocurrió un error al actualizar la categoría.', 'error' => $e->getMessage()], 500);
         }
-    }
-    public function updatePartial(Request $request, $id)
-    {
-        $categoriaVacantes = CategoriaVacantes::find($id);
-        if (!$categoriaVacantes) {
-            $data = [
-                "mensage" => " No se encontro la categoria de la vacante",
-                "status" => 404
-            ];
-            return response()->json([$data], 404);
-        }
-        $validator = Validator::make($request->all(), [
-            'nomCategoria' => 'required|string|max:50',
-        ]);
-        if ($validator->fails()) {
-            $data = [
-                "mesaje " => "Error al validar la categoria de la vacante",
-                "errors" => $validator->errors(),
-                "status" => 400
-            ];
-            return response()->json([$data], 400);
-        }
-        if ($request->has("nomCategoria")) {
-            $categoriaVacantes->nomCategoria = $request->nomCategoria;
-        }
-        
-        
-        $categoriaVacantes->save();
-        $data = [
-            "categoriaVacantes:" => $categoriaVacantes,
-            "status" => 200
-        ];
-        return response()->json([$data], 200);
     }
 
+    public function destroy($id)
+    {
+        $categoria = CategoriaVacantes::find($id);
+
+        if (!$categoria) {
+            return response()->json(['message' => 'Categoría no encontrada'], 404);
+        }
+
+        try {
+            $categoria->delete();
+
+            return response()->json(['message' => 'Categoría eliminada con éxito'], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar categoría de vacantes con ID ' . $id . ' (Api\CategoriaVacantesController::destroy): ' . $e->getMessage());
+             if ($e instanceof \Illuminate\Database\QueryException && $e->getCode() === '23000') {
+                 return response()->json(['message' => 'No se puede eliminar la categoría porque está asociada a vacantes existentes.'], 409);
+             }
+            return response()->json(['message' => 'Ocurrió un error al eliminar la categoría.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+   
 }
