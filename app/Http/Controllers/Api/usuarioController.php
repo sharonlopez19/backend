@@ -14,12 +14,12 @@ class usuarioController extends Controller
      */
     public function index()
     {
-        $user=Usuarios::all();
-        $data=[
+        $user = Usuarios::all();
+        $data = [
             "usuario" => $user,
             "status" => 200
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     /**
@@ -29,6 +29,19 @@ class usuarioController extends Controller
     {
         //
     }
+    // ruta: GET /api/verificar-usuario?email=...&documento=...
+    public function verificarExistencia(Request $request)
+    {
+        $email = $request->query('email');
+        $documento = $request->query('documento');
+
+        $existe = Usuarios::where('email', $email)
+            ->orWhere('numDocumento', $documento)
+            ->exists();
+
+        return response()->json(['existe' => $existe]);
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -57,7 +70,7 @@ class usuarioController extends Controller
             'pensionesCodigo' => 'required|string|size:6',
             'usersId' => 'required|integer'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'mensaje' => 'Error en la validación de datos del usuario',
@@ -65,7 +78,7 @@ class usuarioController extends Controller
                 'status' => 400
             ], 400);
         }
-    
+
         try {
             $usuario = Usuarios::create([
                 'numDocumento' => $request->numDocumento,
@@ -89,7 +102,7 @@ class usuarioController extends Controller
                 'pensionesCodigo' => $request->pensionesCodigo,
                 'usersId' => $request->usersId
             ]);
-    
+
             return response()->json([
                 'mensaje' => 'Usuario creado correctamente',
                 'usuario' => $usuario,
@@ -102,9 +115,6 @@ class usuarioController extends Controller
                 'status' => 500
             ], 500);
         }
-        
-        
-        
     }
 
     /**
@@ -112,12 +122,12 @@ class usuarioController extends Controller
      */
     public function show($id)
     {
-        $user=Usuarios::find($id);
-        $data=[
+        $user = Usuarios::find($id);
+        $data = [
             "usuario" => $user,
             "status" => 200
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     /**
@@ -151,7 +161,7 @@ class usuarioController extends Controller
             return response()->json([$data], 404);
         }
         $validator = Validator::make($request->all(), [
-            
+
             'primerNombre' => 'required|string|max:30',
             'segundoNombre' => 'nullable|string|max:30',
             'primerApellido' => 'required|string|max:30',
@@ -179,7 +189,7 @@ class usuarioController extends Controller
             ];
             return response()->json([$data], 400);
         }
-        
+
         $usuario->primerNombre = $request->primerNombre;
         $usuario->segundoNombre = $request->segundoNombre;
         $usuario->primerApellido = $request->primerApellido;
@@ -225,7 +235,7 @@ class usuarioController extends Controller
             return response()->json([$data], 404);
         }
         $validator = Validator::make($request->all(), [
-            
+
             'primerNombre' => 'string|max:30',
             'segundoNombre' => 'nullable|string|max:30',
             'primerApellido' => 'string|max:30',

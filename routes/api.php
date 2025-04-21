@@ -107,6 +107,7 @@ Route::put('/usuarios/{id}', [usuarioController::class, 'update']);
 Route::get('/usuarios/{id}', [usuarioController::class, 'show']);
 Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
 Route::delete('/usuarios/{id}', [usuarioController::class, 'destroy']);
+Route::get('/verificar-usuario', [usuarioController::class, 'verificarExistencia']);
 
 Route::get('/incapacidad', [incapacidadController::class, 'index']);
 Route::post('/incapacidad', [incapacidadController::class, 'store']);

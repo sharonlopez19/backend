@@ -13,7 +13,7 @@ class generoController extends Controller
     {
         $generos = Genero::all();
         $data = [
-            "rol" => $generos,
+            "genero" => $generos,
             "status" => 200
         ];
         return response()->json($data, 200);
@@ -65,7 +65,7 @@ class generoController extends Controller
             return response()->json([$data], 201);
         }
         $data = [
-            "rol" => $genero,
+            "genero" => $genero,
             "status" => 200
         ];
         return response()->json([$data], 200);
@@ -82,7 +82,7 @@ class generoController extends Controller
         }
         $genero->delete();
         $data = [
-            "rol" => 'Genero eliminado',
+            "genero" => 'Genero eliminado',
             "status" => 200
         ];
         return response()->json([$data], 200);
@@ -113,17 +113,17 @@ class generoController extends Controller
         try {
             $genero->save();
             $data = [
-                "rol" => $genero,
+                "genero" => $genero,
                 "status" => 200
             ];
             return response()->json([$data], 200);
         } catch (\Exception $e) {
             return response()->json([
-                "mensaje" => "Error al modificar el rol",
+                "mensaje" => "Error al modificar el genero",
                 "error" => $e->getMessage(),
                 "status" => 500
             ], 500);
-            return response()->json([$data], 500);
+            
         }
     }
     public function updatePartial(Request $request, $id)
@@ -131,7 +131,7 @@ class generoController extends Controller
         $genero = Genero::find($id);
         if (!$genero) {
             $data = [
-                "mensage" => " No se encontro rol",
+                "mensage" => " No se encontro genero",
                 "status" => 404
             ];
             return response()->json([$data], 404);
@@ -142,7 +142,7 @@ class generoController extends Controller
         ]);
         if ($validator->fails()) {
             $data = [
-                "mesaje " => "Error al validar rol",
+                "mesaje " => "Error al validar genero",
                 "errors" => $validator->errors(),
                 "status" => 400
             ];
@@ -159,7 +159,7 @@ class generoController extends Controller
         }
         $genero->save();
         $data = [
-            "rol" => $genero,
+            "genero" => $genero,
             "status" => 200
         ];
         return response()->json([$data], 200);

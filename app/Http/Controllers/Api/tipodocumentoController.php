@@ -10,10 +10,10 @@ class tipodocumentoController extends Controller
 {
     public function index()
     {
-        $tipocontrato = Tipodocumento::all();
+        $tipodocumento = Tipodocumento::all();
 
         $data = [
-            "tipocontrato" => $tipocontrato,
+            "tipodocumento" => $tipodocumento,
             "status" => 200
         ];
         return response()->json($data, 200);
@@ -30,8 +30,8 @@ class tipodocumentoController extends Controller
     }
     public function show($id)
     {
-        $tipocontrato = Tipodocumento::find($id);
-        if (!$tipocontrato) {
+        $tipodocumento = Tipodocumento::find($id);
+        if (!$tipodocumento) {
             $data = [
                 "mensage" => " No se encontro el tipo de contrato",
                 "status" => 201
@@ -39,7 +39,7 @@ class tipodocumentoController extends Controller
             return response()->json([$data], 201);
         }
         $data = [
-            "tipocontrato" => $tipocontrato,
+            "tipodocumento" => $tipodocumento,
             "status" => 200
         ];
         return response()->json([$data], 200);
