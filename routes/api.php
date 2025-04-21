@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\categoriaHasUsuarioController;
-use App\Http\Controllers\api\categoriaVacantesController;
+use App\Http\Controllers\Api\categoriaVacantesController;
 use App\Http\Controllers\api\contratoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -29,7 +29,8 @@ use App\Http\Controllers\api\tipoContratoController;
 use App\Http\Controllers\Api\tipodocumentoController;
 use App\Http\Controllers\api\vacantesController;
 use App\Http\Controllers\api\vacantesHasPostulacionesController;
-use App\Models\CategoriaVacantes;
+
+
 Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 
 
