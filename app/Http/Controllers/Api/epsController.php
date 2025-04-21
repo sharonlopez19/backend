@@ -11,7 +11,9 @@ class epsController extends Controller
 {
     public function index()
     {
-        $epss = Eps::all();
+    
+
+        $epss = Eps::orderBy('nombreEps', 'asc')->get();;
 
         $data = [
             "eps" => $epss,

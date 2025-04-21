@@ -14,7 +14,7 @@ class estadocivilController extends Controller
      */
     public function index()
     {
-        $estadocivil = Estadocivil::all();
+        $estadocivil = Estadocivil::orderBy('nombreEstado', 'asc')->get();;
 
         $data = [
             "estadocivil" => $estadocivil,
