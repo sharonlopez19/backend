@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\permisosController;
 use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
+use App\Http\Controllers\Api\horasextraController;
 
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
@@ -241,3 +242,9 @@ Route::get('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'show'])
 Route::patch('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'updatePartial']);
 Route::delete('/catvachasusu/{id}', [categoriaHasUsuarioController::class, 'destroy']);
 
+Route::get('/horasextra', [horasextraController::class, 'index']);
+Route::post('/horasextra', [horasextraController::class, 'store']);
+Route::put('/horasextra/{id}', [horasextraController::class, 'update']);
+Route::get('/horasextra/{id}', [horasextraController::class, 'show']);
+Route::patch('/horasextra/{id}', [horasextraController::class, 'updatePartial']);
+Route::delete('/horasextra/{id}', [horasextraController::class, 'destroy']);
