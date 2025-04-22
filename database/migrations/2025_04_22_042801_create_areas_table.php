@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
-            $table->integer('id')->primary();
-            $table->timestamps();
+        Schema::create('area', function (Blueprint $table) {
+            $table->id('idArea'); // PRIMARY KEY auto_increment
+            $table->string('nombreArea', 45);
+            $table->string('jefePersonal', 100);
+            $table->integer('estado'); 
         });
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\areaController;
 use App\Http\Controllers\api\categoriaHasUsuarioController;
 use App\Http\Controllers\Api\categoriaVacantesController;
 use App\Http\Controllers\api\contratoController;
@@ -63,6 +64,12 @@ Route::get('/rols/{id}', [rolController::class, 'show']);
 Route::patch('/rols/{id}', [rolController::class, 'updatePartial']);
 Route::delete('/rols/{id}', [rolController::class, 'destroy']);
 
+Route::get('/area', [areaController::class, 'index']);
+Route::post('/area', [areaController::class, 'store']);
+Route::put('/area/{id}', [areaController::class, 'update']);
+Route::get('/area/{id}', [areaController::class, 'show']);
+Route::patch('/area/{id}', [areaController::class, 'updatePartial']);
+Route::delete('/area/{id}', [areaController::class, 'destroy']);
 // Rutas de GÉNERO
 Route::get('/genero', [generoController::class, 'index']);
 Route::post('/genero', [generoController::class, 'store']);
