@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\areaController;
 use App\Http\Controllers\api\categoriaHasUsuarioController;
 use App\Http\Controllers\Api\categoriaVacantesController;
 use App\Http\Controllers\api\contratoController;
@@ -24,10 +25,12 @@ use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
 use App\Http\Controllers\Api\horasextraController;
+use App\Http\Controllers\Api\VacantesUserController;
 
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
 use App\Http\Controllers\Api\tipodocumentoController;
+use App\Http\Controllers\Api\trazabilidadController;
 use App\Http\Controllers\api\vacantesController;
 use App\Http\Controllers\api\vacantesHasPostulacionesController;
 
@@ -63,6 +66,12 @@ Route::get('/rols/{id}', [rolController::class, 'show']);
 Route::patch('/rols/{id}', [rolController::class, 'updatePartial']);
 Route::delete('/rols/{id}', [rolController::class, 'destroy']);
 
+Route::get('/area', [areaController::class, 'index']);
+Route::post('/area', [areaController::class, 'store']);
+Route::put('/area/{id}', [areaController::class, 'update']);
+Route::get('/area/{id}', [areaController::class, 'show']);
+Route::patch('/area/{id}', [areaController::class, 'updatePartial']);
+Route::delete('/area/{id}', [areaController::class, 'destroy']);
 // Rutas de GÉNERO
 Route::get('/genero', [generoController::class, 'index']);
 Route::post('/genero', [generoController::class, 'store']);
@@ -191,6 +200,8 @@ Route::get('/vacantes/{id}', [vacantesController::class, 'show']);
 Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
 Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
+Route::get('/vacantesuser', [VacantesUserController::class, 'index']);
+Route::post('/vacantesuser', [VacantesUserController::class, 'store']);
 
 Route::get('/contrato', [contratoController::class, 'index']);
 Route::patch('/contrato/{id}/actualizar', [contratoController::class, 'updatePartial']);
@@ -249,3 +260,10 @@ Route::put('/horasextra/{id}', [horasextraController::class, 'update']);
 Route::get('/horasextra/{id}', [horasextraController::class, 'show']);
 Route::patch('/horasextra/{id}', [horasextraController::class, 'updatePartial']);
 Route::delete('/horasextra/{id}', [horasextraController::class, 'destroy']);
+
+Route::get('/trazabilidad', [trazabilidadController::class, 'index']);
+Route::post('/trazabilidad', [trazabilidadController::class, 'store']);
+Route::put('/trazabilidad/{id}', [trazabilidadController::class, 'update']);
+Route::get('/trazabilidad/{id}', [trazabilidadController::class, 'show']);
+Route::patch('/trazabilidad/{id}', [trazabilidadController::class, 'updatePartial']);
+Route::delete('/trazabilidad/{id}', [trazabilidadController::class, 'destroy']);
