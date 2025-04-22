@@ -115,7 +115,7 @@ Route::get('/incapacidad', [incapacidadController::class, 'index']);
 Route::post('/incapacidad', [incapacidadController::class, 'store']);
 Route::put('/incapacidad/{id}', [incapacidadController::class, 'update']);
 Route::get('/incapacidad/{id}', [incapacidadController::class, 'show']);
-Route::patch('/incapacidad/{id}', [incapacidadController::class, 'updatePartial']);
+Route::patch('/incapacidad/{id}/actualizar', [incapacidadController::class, 'updatePartial']);
 Route::delete('/incapacidad/{id}', [incapacidadController::class, 'destroy']);
 
 Route::get('/pazysalvo', [pazysalvoController::class, 'index']);
