@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\horasextraController;
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
 use App\Http\Controllers\Api\tipodocumentoController;
+use App\Http\Controllers\Api\trazabilidadController;
 use App\Http\Controllers\api\vacantesController;
 use App\Http\Controllers\api\vacantesHasPostulacionesController;
 
@@ -256,3 +257,10 @@ Route::put('/horasextra/{id}', [horasextraController::class, 'update']);
 Route::get('/horasextra/{id}', [horasextraController::class, 'show']);
 Route::patch('/horasextra/{id}', [horasextraController::class, 'updatePartial']);
 Route::delete('/horasextra/{id}', [horasextraController::class, 'destroy']);
+
+Route::get('/trazabilidad', [trazabilidadController::class, 'index']);
+Route::post('/trazabilidad', [trazabilidadController::class, 'store']);
+Route::put('/trazabilidad/{id}', [trazabilidadController::class, 'update']);
+Route::get('/trazabilidad/{id}', [trazabilidadController::class, 'show']);
+Route::patch('/trazabilidad/{id}', [trazabilidadController::class, 'updatePartial']);
+Route::delete('/trazabilidad/{id}', [trazabilidadController::class, 'destroy']);
