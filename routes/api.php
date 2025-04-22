@@ -43,7 +43,8 @@ Route::get('/rols/{rolId}/permisos', [RolPermisoController::class, 'obtenerPermi
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::delete('/login', [AuthController::class, 'destroy']);
+Route::get('/verificar-user', [AuthController::class, 'verificarExistencia']);
 
 Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 

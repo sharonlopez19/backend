@@ -63,11 +63,11 @@ class usuarioController extends Controller
             'direccion' => 'required|string|max:45',
             'telefono' => 'required|string|max:20',
             'nacionalidadId' => 'required|integer',
-            'epsCodigo' => 'required|string|size:6',
+            'epsCodigo' => 'required|string',
             'generoId' => 'required|integer',
             'tipoDocumentoId' => 'required|integer',
             'estadoCivilId' => 'required|integer',
-            'pensionesCodigo' => 'required|string|size:6',
+            'pensionesCodigo' => 'required|string',
             'usersId' => 'required|integer'
         ]);
 
@@ -175,11 +175,11 @@ class usuarioController extends Controller
             'direccion' => 'required|string|max:45',
             'telefono' => 'required|string|max:20',
             'nacionalidadId' => 'required|integer',
-            'epsCodigo' => 'required|string|size:6',
+            'epsCodigo' => 'required|string',
             'generoId' => 'required|integer',
             'tipoDocumentoId' => 'required|integer',
             'estadoCivilId' => 'required|integer',
-            'pensionesCodigo' => 'required|string|size:6',
+            'pensionesCodigo' => 'required|string',
             'usersId' => 'required|integer',
         ]);
         if ($validator->fails()) {
@@ -249,11 +249,11 @@ class usuarioController extends Controller
             'direccion' => 'string|max:45',
             'telefono' => 'string|max:20',
             'nacionalidadId' => 'integer',
-            'epsCodigo' => 'string|size:6',
+            'epsCodigo' => 'string',
             'generoId' => 'integer',
             'tipoDocumentoId' => 'integer',
             'estadoCivilId' => 'integer',
-            'pensionesCodigo' => 'string|size:6',
+            'pensionesCodigo' => 'string',
             'usersId' => 'integer',
         ]);
         if ($validator->fails()) {
