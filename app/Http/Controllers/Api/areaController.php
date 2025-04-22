@@ -58,6 +58,18 @@ class areaController extends Controller
         }
         return response()->json(["area" => $area, "status" => 200], 200);
     }
+    public function showNombre($id)
+    {
+        $area = Area::where('nombreArea', $id)->get();
+        
+        if (!$area) {
+            return response()->json([
+                "mensaje" => "No se encontró el área",
+                "status" => 404
+            ], 404);
+        }
+        return response()->json(["area" => $area, "status" => 200], 200);
+    }
 
     public function update(Request $request, $id)
     {

@@ -31,21 +31,21 @@ class contratoController extends Controller
             'estado' => 'required|integer',
             'fechaIngreso' => 'required|date',
             'fechaFinal' => 'required|date',
-            'documento' => 'nullable|file|max:5120' // 5MB max
+            'documento' => 'nullable|file|max:5120', // 5MB max
+            'areaId' => 'required| integer'
         ]);
 
-        // Si viene un archivo, lo subimos
+       
         if ($request->hasFile('documento')) {
             $file = $request->file('documento');
             $folder = 'Archivos/' . $request->input('numDocumento');
 
-            // crea carpeta si no existe, guarda archivo
-            //$path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
+            
             $extension = $file->getClientOriginalExtension();
             $filename = $request->input('numDocumento') . '.' . $extension;
             $path = $file->storeAs($folder, $filename, 'public');
 
-            // guardamos la URL relativa
+            
             $validated['documento'] = 'storage/' . $path;
         }
 
@@ -109,7 +109,8 @@ class contratoController extends Controller
             'fechaFinal' => 'required|date',
             'documento' => 'required|string|max:100',
             'tipoContratoId' => 'required',
-            'numDocumento' => 'required'
+            'numDocumento' => 'required',
+            'areaId' => 'required| integer'
         ]);
         if ($validator->fails()) {
             $data = [
@@ -157,7 +158,8 @@ class contratoController extends Controller
             'estado' => 'nullable|integer',
             'fechaIngreso' => 'nullable|date',
             'fechaFinal' => 'nullable|date',
-            'documento' => 'nullable|file|max:5120'
+            'documento' => 'nullable|file|max:5120',
+            'areaId' => 'nullable| integer'
         ]);
 
         if ($validator->fails()) {
@@ -187,6 +189,9 @@ class contratoController extends Controller
     
         if ($request->has("numDocumento")) {
             $contrato->numDocumento = $request->numDocumento;
+        }
+        if ($request->has("areaId")) {
+            $contrato->areaId = $request->areaId;
         }
     
         // Documento (archivo)

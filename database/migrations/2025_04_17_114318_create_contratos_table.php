@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('documento');
             $table->integer('tipoContratoId')->index('fk_tipoContratoId_contrato');
             $table->integer('numDocumento')->index('fk_numDocumento_contrato');
-            $table->timestamps();
+            $table->integer('areaId');
         });
     }
 

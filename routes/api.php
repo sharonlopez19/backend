@@ -69,6 +69,7 @@ Route::get('/area', [areaController::class, 'index']);
 Route::post('/area', [areaController::class, 'store']);
 Route::put('/area/{id}', [areaController::class, 'update']);
 Route::get('/area/{id}', [areaController::class, 'show']);
+Route::get('/area-nombre/{id}', [areaController::class, 'showNombre']);
 Route::patch('/area/{id}', [areaController::class, 'updatePartial']);
 Route::delete('/area/{id}', [areaController::class, 'destroy']);
 // Rutas de GÉNERO

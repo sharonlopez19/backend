@@ -18,5 +18,6 @@ class Contrato extends Model
         'documento',
         'tipoContratoId',
         'numDocumento',
+        'areaId'
     ];
 }
