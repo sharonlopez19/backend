@@ -33,7 +33,7 @@ class incapacidadController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'descrip' => 'required|string|max:500',
-            'archivo' => 'required|string|max:50',
+            'archivo' => 'nullable|file|max:5120',
             'fechaInicio' => 'required|date',
             'fechaFinal' => 'required|date',
             'contratoId' => 'required|integer'
@@ -46,7 +46,19 @@ class incapacidadController extends Controller
                 'status' => 400
             ], 400);
         }
-    
+        if ($request->hasFile('archivo')) {
+            $file = $request->file('archivo');
+            $folder = 'Archivos/' . $request->input('contratoId');
+
+            // crea carpeta si no existe, guarda archivo
+            //$path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $request->input('contratoId') . '.' . $extension;
+            $path = $file->storeAs($folder, $filename, 'public');
+
+            // guardamos la URL relativa
+            $validated['archivo'] = 'storage/' . $path;
+        }
         try {
             $incapacidad = Incapacidad::create([
                 'descrip' => $request->descrip,
@@ -120,7 +132,7 @@ class incapacidadController extends Controller
         $validator = Validator::make($request->all(), [
             
             'descrip' => 'required|string|max:500',
-            'archivo' => 'required|string|max:50',
+            'archivo' => 'nullable|file|max:5120',
             'fechaInicio' => 'required|date',
             'fechaFinal' => 'required|date',
             'contratoId' => 'required|integer'
@@ -131,6 +143,19 @@ class incapacidadController extends Controller
                 "status" => 400
             ];
             return response()->json([$data], 400);
+        }
+        if ($request->hasFile('archivo')) {
+            $file = $request->file('archivo');
+            $folder = 'Archivos/' . $request->input('numDocumento');
+
+            // crea carpeta si no existe, guarda archivo
+            //$path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $request->input('numDocumento') . '.' . $extension;
+            $path = $file->storeAs($folder, $filename, 'public');
+
+            // guardamos la URL relativa
+            $validated['archivo'] = 'storage/' . $path;
         }
         
         $incapacidad->descrip = $request->descrip;

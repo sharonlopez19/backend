@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
 use App\Http\Controllers\Api\horasextraController;
+use App\Http\Controllers\Api\VacantesUserController;
 
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
@@ -124,7 +125,7 @@ Route::get('/incapacidad', [incapacidadController::class, 'index']);
 Route::post('/incapacidad', [incapacidadController::class, 'store']);
 Route::put('/incapacidad/{id}', [incapacidadController::class, 'update']);
 Route::get('/incapacidad/{id}', [incapacidadController::class, 'show']);
-Route::patch('/incapacidad/{id}', [incapacidadController::class, 'updatePartial']);
+Route::patch('/incapacidad/{id}/actualizar', [incapacidadController::class, 'updatePartial']);
 Route::delete('/incapacidad/{id}', [incapacidadController::class, 'destroy']);
 
 Route::get('/pazysalvo', [pazysalvoController::class, 'index']);
@@ -200,6 +201,8 @@ Route::get('/vacantes/{id}', [vacantesController::class, 'show']);
 Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
 Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
+Route::get('/vacantesuser', [VacantesUserController::class, 'index']);
+Route::post('/vacantesuser', [VacantesUserController::class, 'store']);
 
 Route::get('/contrato', [contratoController::class, 'index']);
 Route::patch('/contrato/{id}/actualizar', [contratoController::class, 'updatePartial']);
