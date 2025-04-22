@@ -111,4 +111,32 @@ class AuthController extends Controller
             'user' => Auth::user()
         ]);
     }
+    public function destroy($id)
+    {
+        $usuario = User::find($id);
+        if (!$usuario) {
+            $data = [
+                "mensage" => " No se encontro Usuario",
+                "status" => 404
+            ];
+            return response()->json([$data], 404);
+        }
+        $usuario->delete();
+        $data = [
+            "rol" => 'Usuario eliminado',
+            "status" => 200
+        ];
+        return response()->json([$data], 200);
+    }
+    // app/Http/Controllers/AuthController.php
+    public function verificarExistencia(Request $request)
+{
+    $email = $request->query('email');
+
+    $existe = User::where('email', $email)->exists();
+
+    return response()->json(['existe' => $existe]);
+}
+
+
 }

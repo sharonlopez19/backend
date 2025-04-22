@@ -39,14 +39,14 @@ class rolController extends Controller
                 "rol" => $rol,
                 "status" => 201
             ], 201);
-            return response()->json([$data],201);
+            
         } catch (\Exception $e) {
             return response()->json([
                 "mensaje" => "Error al crear el rol",
                 "error" => $e->getMessage(),
                 "status" => 500
             ], 500);
-            return response()->json([$data],500);
+            
         }
         
     }
