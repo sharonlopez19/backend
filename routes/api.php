@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\permisosController;
 use App\Http\Controllers\Api\postulacionesController;
 use App\Http\Controllers\Api\pensionesController;
 use App\Http\Controllers\Api\tipohorasController;
+use App\Http\Controllers\Api\VacantesUserController;
 
 use App\Http\Controllers\Api\RolPermisoController;
 use App\Http\Controllers\api\tipoContratoController;
@@ -190,6 +191,8 @@ Route::get('/vacantes/{id}', [vacantesController::class, 'show']);
 Route::patch('/vacantes/{id}', [vacantesController::class, 'updatePartial']);
 Route::delete('/vacantes/{id}', [vacantesController::class, 'destroy']);
 
+Route::get('/vacantesuser', [VacantesUserController::class, 'index']);
+Route::get('/vacantesuser/{id}', [VacantesUserController::class, 'show']);
 
 Route::get('/contrato', [contratoController::class, 'index']);
 Route::patch('/contrato/{id}/actualizar', [contratoController::class, 'updatePartial']);

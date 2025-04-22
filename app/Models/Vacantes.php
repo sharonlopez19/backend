@@ -8,15 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Vacantes extends Model
 {
     use HasFactory;
-    protected  $table = 'vacantes';
-    public $timestamps = false;
+
+    protected $table = 'vacantes';
+
     protected $primaryKey = 'idVacantes';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    public $timestamps = false; 
+
     protected $fillable = [
         'nomVacante',
         'descripVacante',
         'salario',
         'expMinima',
         'cargoVacante',
-        'catVacId'
+        'catVacId',
     ];
 }

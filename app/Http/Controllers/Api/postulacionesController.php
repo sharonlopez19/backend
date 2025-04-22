@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Postulaciones;
+use App\Models\Postulaciones; // Asegúrate de que el nombre del modelo sea correcto (Postulaciones en plural)
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon; // Importar Carbon para las fechas
 
 class PostulacionesController extends Controller
 {
@@ -55,7 +56,7 @@ class PostulacionesController extends Controller
         }
     }
 
-    // === MÉTODO CORREGIDO PARA RECIBIR ID COMO RUTA ===
+    // === MÉTODO searchByVacantesId (NO MODIFICADO) ===
     public function searchByVacantesId($vacantesId)
     {
         try {
@@ -81,6 +82,7 @@ class PostulacionesController extends Controller
         }
     }
 
+    // === MÉTODO updateStatus (NO MODIFICADO) ===
     public function updateStatus(Request $request, $idPostulaciones)
     {
         try {
@@ -120,6 +122,7 @@ class PostulacionesController extends Controller
         }
     }
 
+    // === MÉTODO mapEstadoToTinyint (NO MODIFICADO) ===
     private function mapEstadoToTinyint(string $estadoString): int
     {
         switch ($estadoString) {
@@ -130,12 +133,19 @@ class PostulacionesController extends Controller
         }
     }
 
+    /**
+     * Store a newly created postulation from the public user.
+     * Almacena una nueva postulación enviada por el usuario público.
+     */
     public function store(Request $request)
     {
         try {
+            // <<<< MODIFICADO: Reglas de validación >>>>
+            // Solo validar vacantesId, ya que estado y fecha son automáticos.
             $validator = Validator::make($request->all(), [
                 'vacantesId' => 'required|integer|exists:vacantes,idVacantes',
-                'estado' => ['required', 'string', Rule::in(['Pendiente', 'Aceptado', 'Rechazado'])],
+                // Si envías userId del frontend, valida también:
+                // 'userId' => 'required|integer|exists:users,id',
             ]);
 
             if ($validator->fails()) {
@@ -145,18 +155,28 @@ class PostulacionesController extends Controller
                 ], 422);
             }
 
-            $estadoTinyint = $this->mapEstadoToTinyint($request->input('estado'));
+            // Obtén los datos validados (principalmente vacantesId)
+            $validatedData = $validator->validated();
 
-            $postulacion = Postulaciones::create([
-                'vacantesId' => $request->input('vacantesId'),
-                'estado' => $estadoTinyint,
-                'fechaPostulacion' => now()->toDateString(),
-            ]);
+            // <<<< MODIFICADO: Creación de la postulación asignando valores automáticos >>>>
+            $postulacion = new Postulaciones(); // Crea una nueva instancia del modelo
 
+            $postulacion->vacantesId = $validatedData['vacantesId']; // Asigna el ID de la vacante recibido
+            $postulacion->fechaPostulacion = Carbon::now()->toDateString(); // Asigna la fecha actual usando Carbon
+            $postulacion->estado = $this->mapEstadoToTinyint('Pendiente'); // Asigna el estado 'Pendiente' (mapeado a Tinyint)
+
+            // Si manejas userId y lo validaste:
+            // $postulacion->userId = $validatedData['userId'];
+
+            $postulacion->save(); // Guarda el registro en la base de datos
+
+
+            // Retorna una respuesta de éxito
             return response()->json([
                 'message' => 'Postulación creada exitosamente',
-                'data' => $postulacion,
+                'data' => $postulacion, // Opcional: devuelve la postulación creada
             ], 201);
+
         } catch (\Exception $e) {
             Log::error('Error al crear postulación (PostulacionesController::store): ' . $e->getMessage());
             return response()->json([
