@@ -115,7 +115,7 @@ class rolController extends Controller
                 "error" => $e->getMessage(),
                 "status" => 500
             ], 500);
-            return response()->json([$data],500);
+            
         }
         
     }

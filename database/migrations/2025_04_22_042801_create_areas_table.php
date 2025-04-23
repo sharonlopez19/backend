@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombreArea', 45);
             $table->string('jefePersonal', 100);
             $table->integer('estado'); 
+            
         });
     }
 
