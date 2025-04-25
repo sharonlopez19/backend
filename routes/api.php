@@ -34,6 +34,8 @@ use App\Http\Controllers\Api\trazabilidadController;
 use App\Http\Controllers\api\vacantesController;
 use App\Http\Controllers\api\vacantesHasPostulacionesController;
 
+use App\Http\Controllers\Api\formvacationController;
+
 
 Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 
@@ -268,3 +270,8 @@ Route::put('/trazabilidad/{id}', [trazabilidadController::class, 'update']);
 Route::get('/trazabilidad/{id}', [trazabilidadController::class, 'show']);
 Route::patch('/trazabilidad/{id}', [trazabilidadController::class, 'updatePartial']);
 Route::delete('/trazabilidad/{id}', [trazabilidadController::class, 'destroy']);
+
+
+//USUARIOS SHARON
+
+Route::post('/solicitudes-vacaciones-con-archivo', [formvacationController::class, 'store']);
