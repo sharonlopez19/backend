@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Api\areaController;
 use App\Http\Controllers\api\categoriaHasUsuarioController;
 use App\Http\Controllers\Api\categoriaVacantesController;
@@ -35,7 +36,7 @@ use App\Http\Controllers\api\vacantesController;
 use App\Http\Controllers\api\vacantesHasPostulacionesController;
 
 use App\Http\Controllers\Api\formvacationController;
-
+use App\Http\Controllers\Api\FormHorasController;
 
 Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 
@@ -276,4 +277,7 @@ Route::delete('/trazabilidad/{id}', [trazabilidadController::class, 'destroy']);
 
 Route::post('/solicitudes-vacaciones-con-archivo', [formvacationController::class, 'store']);
 Route::post('/solicitudes-incapacidades', 'App\Http\Controllers\Api\formincapacidadController@store');
+Route::get('/tipos-horas', [tipohorasController::class, 'index']);
+Route::post('/solicitudes-horas-extra', [FormHorasController::class, 'store']);
+
 
