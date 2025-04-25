@@ -275,3 +275,5 @@ Route::delete('/trazabilidad/{id}', [trazabilidadController::class, 'destroy']);
 //USUARIOS SHARON
 
 Route::post('/solicitudes-vacaciones-con-archivo', [formvacationController::class, 'store']);
+Route::post('/solicitudes-incapacidades', 'App\Http\Controllers\Api\formincapacidadController@store');
+
