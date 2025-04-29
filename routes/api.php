@@ -44,13 +44,15 @@ Route::middleware('auth:api')->post('/rols/{rol}/permisos', [RolPermisoControlle
 Route::post('/rols/{rolId}/permisos', [RolPermisoController::class, 'asignarPermisos']);
 Route::get('/rols/{rolId}/permisos', [RolPermisoController::class, 'obtenerPermisos']);
 
-
-
+Route::get('/auth', [AuthController::class, 'index']);
+Route::get('/auth/{id}', [AuthController::class, 'show']);
+Route::get('/users', [AuthController::class, 'indexConRoles']);
+Route::patch('/auth/rol/{id}', [AuthController::class, 'updatePartial']);
 
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::delete('/login', [AuthController::class, 'destroy']);
+Route::delete('/login/{id}', [AuthController::class, 'destroy']);
 Route::get('/verificar-user', [AuthController::class, 'verificarExistencia']);
 
 Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
@@ -278,6 +280,6 @@ Route::delete('/trazabilidad/{id}', [trazabilidadController::class, 'destroy']);
 Route::post('/solicitudes-vacaciones-con-archivo', [formvacationController::class, 'store']);
 Route::post('/solicitudes-incapacidades', 'App\Http\Controllers\Api\formincapacidadController@store');
 Route::get('/tipos-horas', [tipohorasController::class, 'index']);
-Route::post('/solicitudes-horas-extra', [FormHorasController::class, 'store']);
+//Route::post('/solicitudes-horas-extra', [FormHorasController::class, 'store']);
 
 

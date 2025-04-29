@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Usuarios;
+
 
 class usuarioController extends Controller
 {
@@ -325,6 +327,16 @@ class usuarioController extends Controller
             $usuario->usersId = $request->usersId;
         }
         $usuario->save();
+        if ($request->has('userBase')) {
+            $user = User::find($request->input('userBase.id'));
+    
+            if ($user) {
+                $user->email = $request->input('userBase.email');
+                $user->rol = $request->input('userBase.rol');
+                $user->name = $request->input('userBase.name');
+                $user->save();
+            }
+        }
         $data = [
             "rol" => $usuario,
             "status" => 200

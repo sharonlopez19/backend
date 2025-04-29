@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    /**
-     * Registrar un nuevo usuario y devolver token JWT.
-     */
+   
     public function register(Request $request)
     {
         // Validar campos, incluyendo confirmación de email y contraseña
@@ -100,7 +98,15 @@ class AuthController extends Controller
 
         ], 200);
     }
-
+    public function show($id)
+    {
+        $user = User::find($id);
+        $data = [
+            "usuario" => $user,
+            "status" => 200
+        ];
+        return response()->json($data, 200);
+    }
     /**
      * Retornar los datos del usuario autenticado.
      */
@@ -130,13 +136,67 @@ class AuthController extends Controller
     }
     // app/Http/Controllers/AuthController.php
     public function verificarExistencia(Request $request)
-{
-    $email = $request->query('email');
+    {
+        $email = $request->query('email');
 
-    $existe = User::where('email', $email)->exists();
+        $existe = User::where('email', $email)->exists();
 
-    return response()->json(['existe' => $existe]);
-}
+        return response()->json(['existe' => $existe]);
+    }
+    public function indexConRoles()
+    {
+        $usuarios = User::with('roles')->get();
+
+        return response()->json([
+            'status' => 200,
+            'usuarios' => $usuarios
+        ]);
+    }
+    public function updatePartial(Request $request, $id)
+    {
+        $usuario = User::find($id);
+        if (!$usuario) {
+            $data = [
+                "mensage" => " No se encontro Usuario",
+                "status" => 404
+            ];
+            return response()->json($data, 404);
+        }
+        $validator = Validator::make($request->all(), [
+
+            'name' => 'string|max:255',
+            'email' => 'string|max:255',
+            'password' => 'string|max:255',
+            'rol' => 'integer'
+        ]);
+        if ($validator->fails()) {
+            $data = [
+                "mesaje " => "Error al validar Users",
+                "errors" => $validator->errors(),
+                "status" => 400
+            ];
+            return response()->json($data, 400);
+        }
+        if ($request->has("name")) {
+            $usuario->name = $request->name;
+        }
+        if ($request->has("email")) {
+            $usuario->email = $request->email;
+        }
+        if ($request->has("password")) {
+            $usuario->password = $request->password;
+        }
+        if ($request->has("rol")) {
+            $usuario->rol = $request->rol;
+        }
+        
+        $usuario->save();
+        $data = [
+            "rol" => $usuario,
+            "status" => 200
+        ];
+        return response()->json($data, 200);
+    }
 
 
 }
