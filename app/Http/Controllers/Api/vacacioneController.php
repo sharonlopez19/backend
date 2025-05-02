@@ -11,198 +11,163 @@ class vacacioneController extends Controller
 {
     public function index()
     {
-        $vacaciones=Vacaciones::all();
-        $data=[
-            "vacaciones:" => $vacaciones,
+        $vacaciones = Vacaciones::all();
+        return response()->json([
+            "vacaciones" => $vacaciones,
             "status" => 200
-        ];
-        return response()->json($data,200);
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'descrip' => 'required|string|max:500',
-            'archivo' => 'required|string|max:50',
+            'motivo' => 'required|string|max:500',
             'fechaInicio' => 'required|date',
             'fechaFinal' => 'required|date',
+            'dias' => 'required|integer',
             'contratoId' => 'required|integer'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
-                'mensaje' => 'Error en la validación de datos de la vacaciones:',
+                'mensaje' => 'Error en la validación de datos',
                 'errors' => $validator->errors(),
                 'status' => 400
             ], 400);
         }
-    
+
         try {
-            $vacaciones = Vacaciones::create([
-                'descrip' => $request->descrip,
-                'archivo' => $request->archivo,
-                'fechaInicio' => $request->fechaInicio,
-                'fechaFinal' => $request->fechaFinal,
-                'contratoId' => $request->contratoId
-                
-            ]);
-    
+            $vacaciones = Vacaciones::create($request->only([
+                'motivo',
+                'fechaInicio',
+                'fechaFinal',
+                'dias',
+                'contratoId'
+            ]));
+
             return response()->json([
-                'mensaje' => 'vacaciones: creado correctamente',
-                'vacaciones:' => $vacaciones,
+                'mensaje' => 'Vacación creada correctamente',
+                'vacaciones' => $vacaciones,
                 'status' => 201
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'mensaje' => 'Error al crear el vacaciones:',
+                'mensaje' => 'Error al crear la vacación',
                 'error' => $e->getMessage(),
                 'status' => 500
             ], 500);
         }
-        
-        
-        
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
-    {
-        $vacaciones=Vacaciones::find($id);
-        $data=[
-            "vacaciones:" => $vacaciones,
-            "status" => 200
-        ];
-        return response()->json($data,200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function destroy($id)
     {
         $vacaciones = Vacaciones::find($id);
         if (!$vacaciones) {
-            $data = [
-                "mensage" => " No se encontro vacaciones:",
+            return response()->json([
+                "mensaje" => "Vacación no encontrada",
                 "status" => 404
-            ];
-            return response()->json([$data], 404);
+            ], 404);
         }
-        $vacaciones->delete();
-        $data = [
-            "vacaciones:" => 'vacaciones: eliminado',
+
+        return response()->json([
+            "vacaciones" => $vacaciones,
             "status" => 200
-        ];
-        return response()->json([$data], 200);
+        ]);
     }
+
     public function update(Request $request, $id)
     {
         $vacaciones = Vacaciones::find($id);
         if (!$vacaciones) {
-            $data = [
-                "mensage" => " No se encontro vacaciones:",
+            return response()->json([
+                "mensaje" => "Vacación no encontrada",
                 "status" => 404
-            ];
-            return response()->json([$data], 404);
+            ], 404);
         }
+
         $validator = Validator::make($request->all(), [
-            
-            'descrip' => 'required|string|max:500',
-            'archivo' => 'required|string|max:50',
+            'motivo' => 'required|string|max:500',
             'fechaInicio' => 'required|date',
             'fechaFinal' => 'required|date',
+            'dias' => 'required|integer',
             'contratoId' => 'required|integer'
         ]);
+
         if ($validator->fails()) {
-            $data = [
+            return response()->json([
                 "errors" => $validator->errors(),
                 "status" => 400
-            ];
-            return response()->json([$data], 400);
+            ], 400);
         }
-        
-        $vacaciones->descrip = $request->descrip;
-        $vacaciones->archivo = $request->archivo;
-        $vacaciones->fechaInicio = $request->fechaInicio;
-        $vacaciones->fechaFinal = $request->fechaFinal;
-        $vacaciones->contratoId = $request->contratoId;
 
-        try {
-            $vacaciones->save();
-            $data = [
-                "vacaciones:" => $vacaciones,
-                "status" => 200
-            ];
-            return response()->json([$data], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                "mensaje" => "Error al modificar la vacaciones:",
-                "error" => $e->getMessage(),
-                "status" => 500
-            ], 500);
-        }
+        $vacaciones->update($request->only([
+            'motivo',
+            'fechaInicio',
+            'fechaFinal',
+            'dias',
+            'contratoId'
+        ]));
+
+        return response()->json([
+            "vacaciones" => $vacaciones,
+            "status" => 200
+        ]);
     }
+
     public function updatePartial(Request $request, $id)
     {
         $vacaciones = Vacaciones::find($id);
         if (!$vacaciones) {
-            $data = [
-                "mensage" => " No se encontro vacaciones:",
+            return response()->json([
+                "mensaje" => "Vacación no encontrada",
                 "status" => 404
-            ];
-            return response()->json([$data], 404);
+            ], 404);
         }
+
         $validator = Validator::make($request->all(), [
-            
-            'descrip' => 'string|max:500',
-            'archivo' => 'string|max:50',
-            'fechaInicio' => 'date',
-            'fechaFinal' => 'date',
-            'contratoId' => 'integer',
+            'motivo' => 'sometimes|string|max:500',
+            'fechaInicio' => 'sometimes|date',
+            'fechaFinal' => 'sometimes|date',
+            'dias' => 'sometimes|integer',
+            'contratoId' => 'sometimes|integer'
         ]);
+
         if ($validator->fails()) {
-            $data = [
-                "mesaje " => "Error al validar vacaciones:",
+            return response()->json([
+                "mensaje" => "Error de validación",
                 "errors" => $validator->errors(),
                 "status" => 400
-            ];
-            return response()->json([$data], 400);
+            ], 400);
         }
-        if ($request->has("descrip")) {
-            $vacaciones->descrip = $request->descrip;
-        }
-        if ($request->has("archivo")) {
-            $vacaciones->archivo = $request->archivo;
-        }
-        if ($request->has("fechaInicio")) {
-            $vacaciones->fechaInicio = $request->fechaInicio;
-        }
-        if ($request->has("fechaFinal")) {
-            $vacaciones->fechaFinal = $request->fechaFinal;
-        }
-        if ($request->has("contratoId")) {
-            $vacaciones->contratoId = $request->contratoId;
-        }
-        
-        
-        $vacaciones->save();
-        $data = [
-            "vacaciones:" => $vacaciones,
+
+        $vacaciones->update($request->only([
+            'motivo',
+            'fechaInicio',
+            'fechaFinal',
+            'dias',
+            'contratoId'
+        ]));
+
+        return response()->json([
+            "vacaciones" => $vacaciones,
             "status" => 200
-        ];
-        return response()->json([$data], 200);
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $vacaciones = Vacaciones::find($id);
+        if (!$vacaciones) {
+            return response()->json([
+                "mensaje" => "Vacación no encontrada",
+                "status" => 404
+            ], 404);
+        }
+
+        $vacaciones->delete();
+
+        return response()->json([
+            "mensaje" => "Vacación eliminada",
+            "status" => 200
+        ]);
     }
 }

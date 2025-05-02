@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vacaciones', function (Blueprint $table) {
-            $table->integer('idIncapacidad')->primary();
-            $table->string('descrip', 500);
-            $table->string('archivo', 45);
+            $table->integer('idVacaciones')->primary();
+            $table->string('motivo', 500);
             $table->date('fechaInicio');
             $table->date('fechaFinal');
+            $table->integer('dias');
+            $table->enum('estado',['Pendiente','Aprobado','rechazado'])->default('Pendiente');
             $table->integer('contratoId')->index('fk_ContratoId_incapacidad');
         });
     }

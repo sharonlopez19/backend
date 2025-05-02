@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Vacaciones extends Model
 {
     use HasFactory;
-    protected  $table = 'vacaciones';
+    protected $table = 'vacaciones';
     public $timestamps = false;
     protected $primaryKey = 'idVacaciones';
+
     protected $fillable = [
-        "descrip",
-        'archivo',
+        'motivo',
         'fechaInicio',
         'fechaFinal',
-        'contratoId'
+        'dias',
+        'estado',
+        'contratoId',
     ];
 }
